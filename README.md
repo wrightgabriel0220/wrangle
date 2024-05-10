@@ -1,5 +1,6 @@
 # Wrangle
  Cross-platform, Tauri-based PPMA (Personal Project Management Aggregation) desktop client. Aggregates your abstract projects across multiple project management systems, giving you a bird's eye view of your personal workload with full context.
+
 ![GitHub License](https://img.shields.io/github/license/wrightgabriel0220/homiehub-homelab)
 
 ## Getting Started
