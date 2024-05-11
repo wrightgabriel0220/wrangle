@@ -1,7 +1,11 @@
 import { useState } from "react";
 import reactLogo from "./assets/react.svg";
-import { invoke } from "@tauri-apps/api/tauri";
+import { invoke } from "@tauri-apps/api/core";
+import Database from '@tauri-apps/plugin-sql';
 import "./App.css";
+
+const db = await Database.load('sqlite:wrangle.db');
+
 
 function App() {
   const [greetMsg, setGreetMsg] = useState("");
@@ -10,6 +14,7 @@ function App() {
   async function greet() {
     // Learn more about Tauri commands at https://tauri.app/v1/guides/features/command
     setGreetMsg(await invoke("greet", { name }));
+    // console.log("dbtest: ", await db.execute("SELECT * FROM testtable"))
   }
 
   return (
@@ -20,7 +25,7 @@ function App() {
         <a href="https://vitejs.dev" target="_blank">
           <img src="/vite.svg" className="logo vite" alt="Vite logo" />
         </a>
-        <a href="https://tauri.app" target="_blank">
+        <a href="https://tauri.app" target="_blank"> 
           <img src="/tauri.svg" className="logo tauri" alt="Tauri logo" />
         </a>
         <a href="https://reactjs.org" target="_blank">
