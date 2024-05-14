@@ -1,8 +1,8 @@
 import "./App.css";
 import Database from "@tauri-apps/plugin-sql";
-import { ReactNode, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import Sidebar from "./components/Sidebar";
-import Toolbar from "./components/Toolbar";
+import Toolbar from "./components/Toolbar/Toolbar";
 import {
   Alert,
   Button,
@@ -53,7 +53,7 @@ function App() {
   const [projects, setProjects] = useState<Project[]>([]);
   const [errors, setErrors] = useState<Error[]>([]);
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
-  const [modalContent, setModalContent] = useState<ReactNode>(null);
+  const [modalContent, setModalContent] = useState<React.ReactNode>(null);
 
   useEffect(() => {
     try {
@@ -126,7 +126,10 @@ function App() {
           setIsModalOpen={setIsModalOpen}
         />
         <div id="ui-pane">
-          <Toolbar />
+          <Toolbar
+            setModalContent={setModalContent}
+            setIsModalOpen={setIsModalOpen}
+          />
           {errors.map((error, iter) => (
             <Alert
               key={`${error.name}-${iter}`}

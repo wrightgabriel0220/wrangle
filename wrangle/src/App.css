@@ -205,8 +205,12 @@ body {
 }
 
 #toolbar {
+  width: 100%;
+  display: flex;
+  justify-content: end;
   background-color: #403d3d;
   padding: 10px;
+  padding-right: 100px;
 }
 
 #ui-pane {
