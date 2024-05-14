@@ -115,6 +115,7 @@ function App() {
   const [errors, setErrors] = useState<Error[]>([]);
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [modalContent, setModalContent] = useState<React.ReactNode>(null);
+  const [searchQuery, setSearchQuery] = useState<string>("");
 
   useEffect(() => {
     try {
@@ -205,6 +206,7 @@ function App() {
           <Toolbar
             setModalContent={setModalContent}
             setIsModalOpen={setIsModalOpen}
+            setSearchQuery={setSearchQuery}
           />
           {errors.map((error, iter) => (
             <Alert
@@ -213,7 +215,11 @@ function App() {
               content={`${error.name}: ${error.message}`}
             />
           ))}
-          <ProjectList projects={projects} activeView={activeView} />
+          <ProjectList
+            projects={projects}
+            activeView={activeView}
+            searchQuery={searchQuery}
+          />
         </div>
       </div>
     </ChakraBaseProvider>

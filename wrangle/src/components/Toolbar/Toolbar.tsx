@@ -7,6 +7,7 @@ import AddProjectModal from "../modals/AddProjectModal";
 interface ToolbarProps {
   setModalContent: React.Dispatch<React.SetStateAction<React.ReactNode>>;
   setIsModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  setSearchQuery: React.Dispatch<React.SetStateAction<string>>;
 }
 
 export default function Toolbar({
