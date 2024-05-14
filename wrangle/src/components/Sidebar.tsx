@@ -1,7 +1,7 @@
 import { Button } from "@chakra-ui/react";
 import { View } from "../types";
 import SidebarTab from "./SidebarTab";
-import { PlusIcon, FolderIcon } from "@heroicons/react/20/solid";
+import { CheckCircleIcon, PlusIcon } from "@heroicons/react/20/solid";
 import { ReactNode, useCallback } from "react";
 import CreateViewModal from "./modals/CreateViewModal";
 
@@ -40,6 +40,7 @@ export default function Sidebar({
             <SidebarTab
               key={view.id}
               view={view}
+              icon={<CheckCircleIcon width={"30px"} color={`#${view.color}`} />}
               isActive={view.id === selectedViewId}
               setSelectedViewId={setSelectedViewId}
             />
