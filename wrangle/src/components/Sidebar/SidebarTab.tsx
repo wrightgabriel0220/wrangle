@@ -1,5 +1,5 @@
 import { Button } from "@chakra-ui/react";
-import { View } from "../types";
+import { View } from "../../types";
 import { ReactElement } from "react";
 
 interface SidebarTabProps {

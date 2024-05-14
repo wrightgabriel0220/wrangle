@@ -1,9 +1,9 @@
 import { Button } from "@chakra-ui/react";
-import { View } from "../types";
+import { View } from "../../types";
 import SidebarTab from "./SidebarTab";
 import { CheckCircleIcon, PlusIcon } from "@heroicons/react/20/solid";
 import { ReactNode, useCallback } from "react";
-import CreateViewModal from "./modals/CreateViewModal";
+import CreateViewModal from "../modals/CreateViewModal";
 
 interface SidebarProps {
   views: View[];
