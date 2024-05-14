@@ -13,6 +13,13 @@ export type Project = {
   wikiURL?: string;
   wikiType?: "MARKDOWN" | "WEB";
   dashboard?: Dashboard;
+  tags: ProjectTag[];
+};
+
+export type ProjectTag = {
+  id: string;
+  name: string;
+  description?: string;
 };
 
 export type Dashboard = {

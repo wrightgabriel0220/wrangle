@@ -15,7 +15,7 @@ import {
   ModalHeader,
   ModalOverlay,
 } from "@chakra-ui/react";
-import { Project, View } from "./types";
+import { Project, ProjectTag, View } from "./types";
 import ProjectList from "./components/ProjectList/ProjectList";
 
 const db = await Database.load("sqlite:wrangle.db");
@@ -41,59 +41,90 @@ const testView2: View = {
   color: "FFFFFF",
 };
 
+const TestTagAlpha: ProjectTag = {
+  id: "-1",
+  name: "alpha",
+  description: "test tag alpha",
+};
+
+const TestTagBeta: ProjectTag = {
+  id: "-2",
+  name: "beta",
+  description: "test tag beta",
+};
+
+const TestTagOmega: ProjectTag = {
+  id: "-3",
+  name: "omega",
+  description: "test tag omega",
+};
+
 const testProject1: Project = {
   id: "-1",
   name: "Test Project 1",
   wikiType: "WEB",
   wikiURL: "https://www.homiehublab.com/",
+  tags: [TestTagAlpha],
 };
 const testProject2: Project = {
   id: "-2",
   name: "Test Project 2",
+  tags: [TestTagAlpha, TestTagOmega],
 };
 const testProject3: Project = {
   id: "-3",
   name: "Test Project 3",
+  tags: [TestTagBeta],
 };
 const testProject4: Project = {
   id: "-4",
   name: "Test Project 4",
+  tags: [],
 };
 const testProject5: Project = {
   id: "-5",
   name: "Test Project 5",
+  tags: [TestTagOmega],
 };
 const testProject6: Project = {
   id: "-6",
   name: "Test Project 6",
+  tags: [],
 };
 const testProject7: Project = {
   id: "-7",
   name: "Test Project 7",
+  tags: [],
 };
 const testProject8: Project = {
   id: "-8",
   name: "Test Project 8",
+  tags: [],
 };
 const testProject9: Project = {
   id: "-9",
   name: "Test Project 9",
+  tags: [],
 };
 const testProject10: Project = {
   id: "-10",
   name: "Test Project 10",
+  tags: [],
 };
 const testProject11: Project = {
   id: "-11",
   name: "Test Project 11",
+  tags: [],
 };
 const testProject12: Project = {
   id: "-12",
   name: "Test Project 12",
+  tags: [],
 };
 const testProject13: Project = {
   id: "-13",
   name: "Test Project 13",
+  tags: [],
 };
 
 function App() {
@@ -116,6 +147,7 @@ function App() {
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [modalContent, setModalContent] = useState<React.ReactNode>(null);
   const [searchQuery, setSearchQuery] = useState<string>("");
+  const [selectedTags, setSelectedTags] = useState<ProjectTag[]>([]);
 
   useEffect(() => {
     try {
@@ -207,6 +239,7 @@ function App() {
             setModalContent={setModalContent}
             setIsModalOpen={setIsModalOpen}
             setSearchQuery={setSearchQuery}
+            setSelectedTags={setSelectedTags}
           />
           {errors.map((error, iter) => (
             <Alert
@@ -219,6 +252,7 @@ function App() {
             projects={projects}
             activeView={activeView}
             searchQuery={searchQuery}
+            selectedTags={selectedTags}
           />
         </div>
       </div>
