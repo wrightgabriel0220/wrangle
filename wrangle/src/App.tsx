@@ -12,6 +12,7 @@ import {
   ModalCloseButton,
   ModalContent,
   ModalFooter,
+  ModalHeader,
   ModalOverlay,
 } from "@chakra-ui/react";
 import { View } from "./types";
@@ -78,9 +79,20 @@ function App() {
             setModalContent(null);
           }}
         >
-          <ModalOverlay />
+          <ModalOverlay
+            bg="none"
+            backdropFilter="auto"
+            backdropBlur="5px"
+            backdropBrightness="80%"
+          />
           <ModalContent>
-            <ModalCloseButton />
+            <ModalHeader
+              display="flex"
+              justifyContent="end"
+              padding="10px 30px"
+            >
+              <ModalCloseButton />
+            </ModalHeader>
             <ModalBody>{modalContent}</ModalBody>
 
             <ModalFooter>
