@@ -1,4 +1,4 @@
-import { Box, LinkBox, LinkOverlay } from "@chakra-ui/react";
+import { Box, LinkBox, LinkOverlay, Tag } from "@chakra-ui/react";
 import { Project as ProjectType } from "../../types";
 import ProjectWarning from "./ProjectWarning";
 import ProjectWikiLinkButton from "./ProjectWikiLinkButton";
@@ -33,6 +33,19 @@ export default function Project({ project }: ProjectProps) {
           </LinkOverlay>
         </LinkBox>
       )}
+      {project.tags.map((projectTag) => (
+        <Tag
+          size="sm"
+          variant="solid"
+          backgroundColor={`#${projectTag.color}`}
+          color="#000000"
+          fontWeight="semibold"
+          padding="2px 10px"
+          borderRadius="full"
+        >
+          {projectTag.name}
+        </Tag>
+      ))}
       <ProjectWikiLinkButton project={project} />
     </Box>
   );

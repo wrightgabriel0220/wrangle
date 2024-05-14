@@ -45,18 +45,21 @@ const TestTagAlpha: ProjectTag = {
   id: "-1",
   name: "alpha",
   description: "test tag alpha",
+  color: "01FBAA",
 };
 
 const TestTagBeta: ProjectTag = {
   id: "-2",
   name: "beta",
   description: "test tag beta",
+  color: "FF00BC",
 };
 
 const TestTagOmega: ProjectTag = {
   id: "-3",
   name: "omega",
   description: "test tag omega",
+  color: "AB9A89",
 };
 
 const testProject1: Project = {

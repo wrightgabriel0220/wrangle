@@ -20,6 +20,7 @@ export type ProjectTag = {
   id: string;
   name: string;
   description?: string;
+  color: string;
 };
 
 export type Dashboard = {
