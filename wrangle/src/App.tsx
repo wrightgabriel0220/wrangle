@@ -15,7 +15,8 @@ import {
   ModalHeader,
   ModalOverlay,
 } from "@chakra-ui/react";
-import { View } from "./types";
+import { Project, View } from "./types";
+import ProjectList from "./components/ProjectList";
 
 const db = await Database.load("sqlite:wrangle.db");
 
@@ -49,6 +50,7 @@ function App() {
     testView1,
     testView2,
   ]);
+  const [projects, setProjects] = useState<Project[]>([]);
   const [errors, setErrors] = useState<Error[]>([]);
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [modalContent, setModalContent] = useState<ReactNode>(null);
@@ -57,6 +59,9 @@ function App() {
     try {
       db.select<View[]>("SELECT * FROM views").then((queryRes) => {
         setViews([allProjectsView, testView1, testView2, ...queryRes]);
+      });
+      db.select<Project[]>("SELECT * FROM projects").then((queryRes) => {
+        setProjects(queryRes);
       });
     } catch (err) {
       setErrors(errors.concat(err as Error));
@@ -68,6 +73,9 @@ function App() {
   //   console.log("ISMODALOPEN: ", isModalOpen);
   //   console.log("VIEWS: ", views);
   // }, [views, modalContent, isModalOpen]);
+
+  const activeView =
+    views.find((view) => view.id === selectedViewId) ?? allProjectsView;
 
   return (
     <ChakraBaseProvider>
@@ -126,6 +134,7 @@ function App() {
               content={`${error.name}: ${error.message}`}
             />
           ))}
+          <ProjectList projects={projects} activeView={activeView} />
         </div>
       </div>
     </ChakraBaseProvider>
