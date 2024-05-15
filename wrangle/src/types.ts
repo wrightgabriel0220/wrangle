@@ -11,7 +11,7 @@ export type Project = {
   name: string;
   wikiFilepath?: string;
   wikiURL?: string;
-  wikiType?: "MARKDOWN" | "WEB";
+  wikiType?: "MARKDOWN" | "WEB" | "";
   dashboard?: Dashboard;
   tags: ProjectTag[];
 };

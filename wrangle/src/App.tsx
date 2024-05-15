@@ -3,20 +3,10 @@ import Database from "@tauri-apps/plugin-sql";
 import { useEffect, useState } from "react";
 import Sidebar from "./components/Sidebar/Sidebar";
 import Toolbar from "./components/Toolbar/Toolbar";
-import {
-  Alert,
-  Button,
-  ChakraBaseProvider,
-  Modal,
-  ModalBody,
-  ModalCloseButton,
-  ModalContent,
-  ModalFooter,
-  ModalHeader,
-  ModalOverlay,
-} from "@chakra-ui/react";
+import { Alert, ChakraBaseProvider } from "@chakra-ui/react";
 import { Project, ProjectTag, View } from "./types";
 import ProjectList from "./components/ProjectList/ProjectList";
+import BaseModal from "./components/BaseModal";
 
 const db = await Database.load("sqlite:wrangle.db");
 
@@ -146,6 +136,11 @@ function App() {
     testProject4,
     testProject5,
   ]);
+  const [tags, setTags] = useState<ProjectTag[]>([
+    TestTagAlpha,
+    TestTagBeta,
+    TestTagOmega,
+  ]);
   const [errors, setErrors] = useState<Error[]>([]);
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [modalContent, setModalContent] = useState<React.ReactNode>(null);
@@ -174,6 +169,11 @@ function App() {
           testProject13,
           ...queryRes,
         ]);
+        db.select<ProjectTag[]>("SELECT * FROM project_tags").then(
+          (queryRes) => {
+            setTags([TestTagAlpha, TestTagBeta, TestTagOmega, ...queryRes]);
+          }
+        );
       });
     } catch (err) {
       setErrors(errors.concat(err as Error));
@@ -192,44 +192,12 @@ function App() {
   return (
     <ChakraBaseProvider>
       <div className="container">
-        <Modal
-          isOpen={isModalOpen}
-          onClose={() => {
-            setIsModalOpen(false);
-            setModalContent(null);
-          }}
-        >
-          <ModalOverlay
-            bg="none"
-            backdropFilter="auto"
-            backdropBlur="5px"
-            backdropBrightness="80%"
-          />
-          <ModalContent>
-            <ModalHeader
-              display="flex"
-              justifyContent="end"
-              padding="10px 30px"
-            >
-              <ModalCloseButton />
-            </ModalHeader>
-            <ModalBody>{modalContent}</ModalBody>
-
-            <ModalFooter>
-              <Button
-                colorScheme="blue"
-                mr={3}
-                onClick={() => {
-                  setIsModalOpen(false);
-                  setModalContent(null);
-                }}
-              >
-                Close
-              </Button>
-              <Button variant="ghost">Secondary Action</Button>
-            </ModalFooter>
-          </ModalContent>
-        </Modal>
+        <BaseModal
+          isModalOpen={isModalOpen}
+          modalContent={modalContent}
+          setIsModalOpen={setIsModalOpen}
+          setModalContent={setModalContent}
+        />
         <Sidebar
           views={views}
           selectedViewId={selectedViewId}
@@ -243,6 +211,7 @@ function App() {
             setIsModalOpen={setIsModalOpen}
             setSearchQuery={setSearchQuery}
             setSelectedTags={setSelectedTags}
+            tags={tags}
           />
           {errors.map((error, iter) => (
             <Alert
