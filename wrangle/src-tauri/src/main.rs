@@ -71,6 +71,12 @@ fn main() {
             );",
             kind: MigrationKind::Up,
         },
+        Migration {
+            version: 8,
+            description: "modify_project_tags_add_color",
+            sql: "ALTER TABLE project_tags ADD COLUMN color TEXT DEFAULT 000000",
+            kind: MigrationKind::Up,
+        }
     ];
 
     tauri::Builder::default()

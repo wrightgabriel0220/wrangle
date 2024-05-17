@@ -9,9 +9,13 @@ import ProjectWikiFilepathField from "../fields/ProjectWikiFilepathField";
 
 interface AddProjectModalProps {
   tags: ProjectTag[];
+  fetchAppData: () => void;
 }
 
-export default function AddProjectModal({ tags }: AddProjectModalProps) {
+export default function AddProjectModal({
+  tags,
+  fetchAppData,
+}: AddProjectModalProps) {
   return (
     <Box
       color="white"
@@ -40,7 +44,11 @@ export default function AddProjectModal({ tags }: AddProjectModalProps) {
           </SelectField>
           <ProjectWikiURLField />
           <ProjectWikiFilepathField />
-          <TagSelector name="addProjectTagSelector" tags={tags} />
+          <TagSelector
+            name="addProjectTagSelector"
+            tags={tags}
+            fetchAppData={fetchAppData}
+          />
           {/* <label htmlFor="tags">Tags</label>
           <Field as="" name="tags" /> */}
         </Form>

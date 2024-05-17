@@ -5,18 +5,22 @@ import TagSelector from "./TagSelector";
 import AddProjectModal from "../modals/AddProjectModal";
 import { ProjectTag } from "../../types";
 import { Form, Formik } from "formik";
+import Database from "@tauri-apps/plugin-sql";
 
 interface ToolbarProps {
   setModalContent: React.Dispatch<React.SetStateAction<React.ReactNode>>;
   setIsModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
   setSearchQuery: React.Dispatch<React.SetStateAction<string>>;
   setSelectedTags: React.Dispatch<React.SetStateAction<ProjectTag[]>>;
+  fetchAppData: () => void;
   tags: ProjectTag[];
+  db: Database;
 }
 
 export default function Toolbar({
   setIsModalOpen,
   setModalContent,
+  fetchAppData,
   tags,
 }: ToolbarProps) {
   return (
@@ -28,11 +32,17 @@ export default function Toolbar({
     >
       <Form id="toolbar">
         <SearchBar />
-        <TagSelector name="toolbarTagSelector" tags={tags} />
+        <TagSelector
+          name="toolbarTagSelector"
+          tags={tags}
+          fetchAppData={fetchAppData}
+        />
         <Button
           onClick={() => {
             setIsModalOpen(true);
-            setModalContent(<AddProjectModal tags={tags} />);
+            setModalContent(
+              <AddProjectModal tags={tags} fetchAppData={fetchAppData} />
+            );
           }}
           height="30px"
           backgroundColor="#83B073"

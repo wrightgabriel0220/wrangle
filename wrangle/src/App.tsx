@@ -1,6 +1,6 @@
 import "./App.css";
 import Database from "@tauri-apps/plugin-sql";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import Sidebar from "./components/Sidebar/Sidebar";
 import Toolbar from "./components/Toolbar/Toolbar";
 import { Alert, ChakraBaseProvider } from "@chakra-ui/react";
@@ -31,43 +31,43 @@ const testView2: View = {
   color: "FFFFFF",
 };
 
-const TestTagAlpha: ProjectTag = {
-  id: "-1",
-  name: "alpha",
-  description: "test tag alpha",
-  color: "01FBAA",
-};
+// const TestTagAlpha: ProjectTag = {
+//   id: "-1",
+//   name: "alpha",
+//   description: "test tag alpha",
+//   color: "01FBAA",
+// };
 
-const TestTagBeta: ProjectTag = {
-  id: "-2",
-  name: "beta",
-  description: "test tag beta",
-  color: "FF00BC",
-};
+// const TestTagBeta: ProjectTag = {
+//   id: "-2",
+//   name: "beta",
+//   description: "test tag beta",
+//   color: "FF00BC",
+// };
 
-const TestTagOmega: ProjectTag = {
-  id: "-3",
-  name: "omega",
-  description: "test tag omega",
-  color: "AB9A89",
-};
+// const TestTagOmega: ProjectTag = {
+//   id: "-3",
+//   name: "omega",
+//   description: "test tag omega",
+//   color: "AB9A89",
+// };
 
 const testProject1: Project = {
   id: "-1",
   name: "Test Project 1",
   wikiType: "WEB",
   wikiURL: "https://www.homiehublab.com/",
-  tags: [TestTagAlpha],
+  tags: [],
 };
 const testProject2: Project = {
   id: "-2",
   name: "Test Project 2",
-  tags: [TestTagAlpha, TestTagOmega],
+  tags: [],
 };
 const testProject3: Project = {
   id: "-3",
   name: "Test Project 3",
-  tags: [TestTagBeta],
+  tags: [],
 };
 const testProject4: Project = {
   id: "-4",
@@ -77,7 +77,7 @@ const testProject4: Project = {
 const testProject5: Project = {
   id: "-5",
   name: "Test Project 5",
-  tags: [TestTagOmega],
+  tags: [],
 };
 const testProject6: Project = {
   id: "-6",
@@ -136,18 +136,14 @@ function App() {
     testProject4,
     testProject5,
   ]);
-  const [tags, setTags] = useState<ProjectTag[]>([
-    TestTagAlpha,
-    TestTagBeta,
-    TestTagOmega,
-  ]);
+  const [tags, setTags] = useState<ProjectTag[]>([]);
   const [errors, setErrors] = useState<Error[]>([]);
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [modalContent, setModalContent] = useState<React.ReactNode>(null);
   const [searchQuery, setSearchQuery] = useState<string>("");
   const [selectedTags, setSelectedTags] = useState<ProjectTag[]>([]);
 
-  useEffect(() => {
+  const fetchAppData = useCallback(() => {
     try {
       db.select<View[]>("SELECT * FROM views").then((queryRes) => {
         setViews([allProjectsView, testView1, testView2, ...queryRes]);
@@ -171,7 +167,7 @@ function App() {
         ]);
         db.select<ProjectTag[]>("SELECT * FROM project_tags").then(
           (queryRes) => {
-            setTags([TestTagAlpha, TestTagBeta, TestTagOmega, ...queryRes]);
+            setTags(queryRes);
           }
         );
       });
@@ -180,11 +176,9 @@ function App() {
     }
   }, []);
 
-  // useEffect(() => {
-  //   console.log("MODALCONTENT: ", modalContent);
-  //   console.log("ISMODALOPEN: ", isModalOpen);
-  //   console.log("VIEWS: ", views);
-  // }, [views, modalContent, isModalOpen]);
+  useEffect(() => {
+    fetchAppData();
+  }, []);
 
   const activeView =
     views.find((view) => view.id === selectedViewId) ?? allProjectsView;
@@ -212,6 +206,8 @@ function App() {
             setSearchQuery={setSearchQuery}
             setSelectedTags={setSelectedTags}
             tags={tags}
+            db={db}
+            fetchAppData={fetchAppData}
           />
           {errors.map((error, iter) => (
             <Alert

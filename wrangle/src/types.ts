@@ -31,6 +31,11 @@ export type Dashboard = {
   notes: string;
 };
 
+export interface SelectOption {
+  display: string;
+  value: any;
+}
+
 // dashboards {
 // 	id integer pk increments unique
 // 	project_id integer > projects.id
