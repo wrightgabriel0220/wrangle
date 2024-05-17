@@ -76,6 +76,7 @@ export default function ComboboxList({
       display={isOpen ? "inline-block" : "none"}
       backgroundColor="#FFFFFF"
       width="100%"
+      zIndex={999}
     >
       {isInputCreateValid && (
         <Button
