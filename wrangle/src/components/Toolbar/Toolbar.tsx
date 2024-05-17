@@ -1,11 +1,11 @@
-import { Button } from "@chakra-ui/react";
+import { Button, Flex } from "@chakra-ui/react";
 import { PlusIcon } from "@heroicons/react/20/solid";
 import SearchBar from "./SearchBar";
 import TagSelector from "./TagSelector";
 import AddProjectModal from "../modals/AddProjectModal";
 import { ProjectTag } from "../../types";
-import { Form, Formik } from "formik";
 import Database from "@tauri-apps/plugin-sql";
+import { useMultipleSelection } from "downshift";
 
 interface ToolbarProps {
   setModalContent: React.Dispatch<React.SetStateAction<React.ReactNode>>;
@@ -23,34 +23,33 @@ export default function Toolbar({
   fetchAppData,
   tags,
 }: ToolbarProps) {
+  const { selectedItems, addSelectedItem } = useMultipleSelection<string>();
+
+  console.log("selected tags in Toolbar: ", selectedItems);
+
   return (
-    <Formik
-      initialValues={{ searchQuery: "", tags: [] }}
-      onSubmit={(res) => {
-        console.log("result: ", res);
-      }}
-    >
-      <Form id="toolbar">
-        <SearchBar />
-        <TagSelector
-          name="toolbarTagSelector"
-          tags={tags}
-          fetchAppData={fetchAppData}
-        />
-        <Button
-          onClick={() => {
-            setIsModalOpen(true);
-            setModalContent(
-              <AddProjectModal tags={tags} fetchAppData={fetchAppData} />
-            );
-          }}
-          height="30px"
-          backgroundColor="#83B073"
-          borderRadius="100%"
-        >
-          <PlusIcon width="100%" height="100%" />
-        </Button>
-      </Form>
-    </Formik>
+    <Flex>
+      <SearchBar />
+      <TagSelector
+        name="toolbarTagSelector"
+        tags={tags}
+        fetchAppData={fetchAppData}
+        selectedItems={selectedItems}
+        addSelectedItem={addSelectedItem}
+      />
+      <Button
+        onClick={() => {
+          setIsModalOpen(true);
+          setModalContent(
+            <AddProjectModal tags={tags} fetchAppData={fetchAppData} />
+          );
+        }}
+        height="30px"
+        backgroundColor="#83B073"
+        borderRadius="100%"
+      >
+        <PlusIcon width="100%" height="100%" />
+      </Button>
+    </Flex>
   );
 }

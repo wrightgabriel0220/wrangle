@@ -6,6 +6,7 @@ import SelectField from "../fields/SelectField";
 import TagSelector from "../Toolbar/TagSelector";
 import ProjectWikiURLField from "../fields/ProjectWikiURLField";
 import ProjectWikiFilepathField from "../fields/ProjectWikiFilepathField";
+import { useMultipleSelection } from "downshift";
 
 interface AddProjectModalProps {
   tags: ProjectTag[];
@@ -16,6 +17,10 @@ export default function AddProjectModal({
   tags,
   fetchAppData,
 }: AddProjectModalProps) {
+  const { selectedItems, addSelectedItem } = useMultipleSelection<string>();
+
+  console.log("selected tags in AddProjectModal: ", selectedItems);
+
   return (
     <Box
       color="white"
@@ -48,6 +53,8 @@ export default function AddProjectModal({
             name="addProjectTagSelector"
             tags={tags}
             fetchAppData={fetchAppData}
+            selectedItems={selectedItems}
+            addSelectedItem={addSelectedItem}
           />
           {/* <label htmlFor="tags">Tags</label>
           <Field as="" name="tags" /> */}

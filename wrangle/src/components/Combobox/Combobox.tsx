@@ -1,16 +1,17 @@
 import { Box, Flex } from "@chakra-ui/react";
 import { useCombobox } from "downshift";
 import { useState } from "react";
-import { SelectOption } from "../../types";
 import ComboboxInput from "./ComboboxInput";
 import ComboboxList from "./ComboboxList";
 
 interface ComboboxProps {
   label?: string;
-  options: SelectOption[];
+  options: string[];
   createItem: (itemName: string) => void;
   placeholder?: string;
   addItemButtonText?: string;
+  selectedItems: string[];
+  addSelectedItem: (item: any) => void;
 }
 
 export default function Combobox({
@@ -19,9 +20,11 @@ export default function Combobox({
   createItem,
   placeholder,
   addItemButtonText,
+  selectedItems,
+  addSelectedItem,
 }: ComboboxProps) {
   const [inputValue, setInputValue] = useState<string>("");
-  const [visibleValues, setVisibleValues] = useState<SelectOption[]>(options);
+  const [visibleValues, setVisibleValues] = useState<string[]>(options);
 
   const {
     isOpen,
@@ -32,12 +35,20 @@ export default function Combobox({
     getInputProps,
     getItemProps,
   } = useCombobox({
+    onSelectedItemChange: (changes) => {
+      addSelectedItem(changes.selectedItem);
+      setVisibleValues(
+        options.filter(
+          (option) =>
+            !selectedItems.includes(option) &&
+            option.startsWith(changes.inputValue ?? "")
+        )
+      );
+    },
     onInputValueChange: (changes) => {
       setInputValue(changes.inputValue);
       setVisibleValues(
-        options.filter((option) =>
-          option.display.startsWith(changes.inputValue)
-        )
+        options.filter((option) => option.startsWith(changes.inputValue))
       );
     },
     items: visibleValues,

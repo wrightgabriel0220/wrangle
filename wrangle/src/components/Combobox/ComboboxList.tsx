@@ -3,20 +3,19 @@ import {
   UseComboboxGetItemPropsReturnValue,
   UseComboboxGetMenuPropsReturnValue,
 } from "downshift";
-import { SelectOption } from "../../types";
 
 interface ComboboxListProps {
   getMenuProps: () => UseComboboxGetMenuPropsReturnValue;
   getItemProps: (options: {
-    item: SelectOption;
+    item: string;
     index: number;
   }) => UseComboboxGetItemPropsReturnValue;
   createItem: (itemName: string) => void;
   isOpen: boolean;
   inputValue: string;
-  options: SelectOption[];
+  options: string[];
   addItemButtonText: string;
-  visibleValues: SelectOption[];
+  visibleValues: string[];
   highlightedIndex: number;
 }
 
@@ -65,9 +64,7 @@ export default function ComboboxList({
   highlightedIndex,
   createItem,
 }: ComboboxListProps) {
-  const isInputCreateValid =
-    inputValue !== "" &&
-    !options.map((option) => option.display).includes(inputValue);
+  const isInputCreateValid = inputValue !== "" && !options.includes(inputValue);
 
   return (
     <List
@@ -100,7 +97,7 @@ export default function ComboboxList({
           itemIndex={index}
           value={item}
         >
-          {item.display}
+          {item}
         </ComboboxItem>
       ))}
     </List>

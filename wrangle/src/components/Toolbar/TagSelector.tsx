@@ -1,12 +1,14 @@
-import { Field } from "formik";
 import { ProjectTag } from "../../types";
 import Combobox from "../Combobox/Combobox";
 import Database from "@tauri-apps/plugin-sql";
+import { useMultipleSelection } from "downshift";
 
 interface TagSelectorProps {
   name: string;
   tags: ProjectTag[];
   fetchAppData: () => void;
+  selectedItems: string[];
+  addSelectedItem: (item: string) => void;
 }
 
 const db = await Database.load("sqlite:wrangle.db");
@@ -21,7 +23,6 @@ function getRandomColor() {
 }
 
 const createTag = (name: string) => {
-  console.log(`CREATING TAG "${name}" IN DB ${db}`);
   return db
     ?.execute(
       "INSERT INTO project_tags (name, description, color) VALUES ($1, $2, $3)",
@@ -34,18 +35,25 @@ export default function TagSelector({
   name,
   tags,
   fetchAppData,
+  selectedItems,
+  addSelectedItem,
 }: TagSelectorProps) {
+  const {
+    selectedItems: internalSelectedItems,
+    addSelectedItem: internalAddSelectedItem,
+  } = useMultipleSelection<string>();
+
   return (
-    // <Field name={name}>
     <Combobox
       label="Tags"
       addItemButtonText="Add new tag "
       placeholder="Search tags..."
-      options={tags.map((tag) => ({ display: tag.name, value: tag.id }))}
+      options={tags.map((tag) => tag.name)}
       createItem={(itemName) => {
         createTag(itemName).then(() => fetchAppData());
       }}
+      selectedItems={selectedItems ?? internalSelectedItems}
+      addSelectedItem={addSelectedItem ?? internalAddSelectedItem}
     />
-    // </Field>
   );
 }
