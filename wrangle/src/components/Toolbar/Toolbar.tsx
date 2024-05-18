@@ -24,7 +24,8 @@ export default function Toolbar({
   fetchAppData,
   tags,
 }: ToolbarProps) {
-  const { selectedItems, addSelectedItem } = useMultipleSelection<string>();
+  const { selectedItems, addSelectedItem, removeSelectedItem } =
+    useMultipleSelection<string>();
 
   console.log("selected tags in Toolbar: ", selectedItems);
 
@@ -38,6 +39,7 @@ export default function Toolbar({
           fetchAppData={fetchAppData}
           selectedItems={selectedItems}
           addSelectedItem={addSelectedItem}
+          removeSelectedItem={removeSelectedItem}
         />
         <Button
           onClick={() => {

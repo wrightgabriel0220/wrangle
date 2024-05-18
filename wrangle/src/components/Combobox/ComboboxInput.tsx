@@ -4,12 +4,14 @@ import {
   UseComboboxGetToggleButtonPropsReturnValue,
 } from "downshift";
 import { ArrowDownIcon, ArrowUpIcon } from "@heroicons/react/20/solid";
+import ComboboxClearButton from "./ComboboxClearButton";
 
 interface ComboboxInputProps {
   isOpen: boolean;
   getInputProps: () => UseComboboxGetInputPropsReturnValue;
   getToggleButtonProps: () => UseComboboxGetToggleButtonPropsReturnValue;
   placeholder: string;
+  clearSelectedItems: () => void;
 }
 
 export default function ComboboxInput({
@@ -17,6 +19,7 @@ export default function ComboboxInput({
   getInputProps,
   getToggleButtonProps,
   placeholder,
+  clearSelectedItems,
 }: ComboboxInputProps) {
   return (
     <Flex
@@ -25,6 +28,7 @@ export default function ComboboxInput({
       backgroundColor="white"
       borderRadius="10px"
     >
+      <ComboboxClearButton clearSelectedItems={clearSelectedItems} />
       <Input
         {...getInputProps()}
         placeholder={placeholder ?? "Search..."}

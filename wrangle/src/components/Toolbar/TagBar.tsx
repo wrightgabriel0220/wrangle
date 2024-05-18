@@ -1,5 +1,6 @@
-import { Badge, Flex } from "@chakra-ui/react";
+import { Flex } from "@chakra-ui/react";
 import { ProjectTag } from "../../types";
+import TagBadge from "../TagBadge";
 
 interface TagBarProps {
   tags: ProjectTag[];
@@ -16,15 +17,7 @@ export default function TagBar({ tags }: TagBarProps) {
       top={tags.length > 0 ? "0%" : "-80%"}
     >
       {tags.map((tag) => (
-        <Badge
-          key={tag.id}
-          backgroundColor={tag.color}
-          borderRadius="15px"
-          p="3px"
-          px="10px"
-        >
-          {tag.name}
-        </Badge>
+        <TagBadge tag={tag} />
       ))}
     </Flex>
   );

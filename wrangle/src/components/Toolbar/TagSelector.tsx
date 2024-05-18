@@ -9,6 +9,7 @@ interface TagSelectorProps {
   fetchAppData: () => void;
   selectedItems: string[];
   addSelectedItem: (item: string) => void;
+  removeSelectedItem: (item: string) => void;
 }
 
 const db = await Database.load("sqlite:wrangle.db");
@@ -32,11 +33,11 @@ const createTag = (name: string) => {
 };
 
 export default function TagSelector({
-  name,
   tags,
   fetchAppData,
   selectedItems,
   addSelectedItem,
+  removeSelectedItem,
 }: TagSelectorProps) {
   const {
     selectedItems: internalSelectedItems,
@@ -54,6 +55,7 @@ export default function TagSelector({
       }}
       selectedItems={selectedItems ?? internalSelectedItems}
       addSelectedItem={addSelectedItem ?? internalAddSelectedItem}
+      removeSelectedItem={removeSelectedItem}
     />
   );
 }

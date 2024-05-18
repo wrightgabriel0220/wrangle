@@ -1,6 +1,6 @@
 import { Box, Flex } from "@chakra-ui/react";
 import { useCombobox } from "downshift";
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import ComboboxInput from "./ComboboxInput";
 import ComboboxList from "./ComboboxList";
 
@@ -11,7 +11,8 @@ interface ComboboxProps {
   placeholder?: string;
   addItemButtonText?: string;
   selectedItems: string[];
-  addSelectedItem: (item: any) => void;
+  addSelectedItem: (item: string) => void;
+  removeSelectedItem: (item: string) => void;
 }
 
 export default function Combobox({
@@ -22,6 +23,7 @@ export default function Combobox({
   addItemButtonText,
   selectedItems,
   addSelectedItem,
+  removeSelectedItem,
 }: ComboboxProps) {
   const [inputValue, setInputValue] = useState<string>("");
   const [visibleValues, setVisibleValues] = useState<string[]>(options);
@@ -54,13 +56,21 @@ export default function Combobox({
     items: visibleValues,
   });
 
+  const clearSelectedItems = useCallback(() => {
+    console.log("CLEARING");
+    selectedItems.forEach((item) => removeSelectedItem(item));
+  }, [selectedItems, removeSelectedItem]);
+
   return (
     <Flex direction="column" align="center">
-      <label {...getLabelProps()}>{label}</label>
+      <label {...getLabelProps()} color="white">
+        {label}
+      </label>
       <Flex direction="column" flex="1 1 auto">
         <ComboboxInput
           getInputProps={getInputProps}
           getToggleButtonProps={getToggleButtonProps}
+          clearSelectedItems={clearSelectedItems}
           isOpen={isOpen}
           placeholder={placeholder ?? "Search..."}
         />
