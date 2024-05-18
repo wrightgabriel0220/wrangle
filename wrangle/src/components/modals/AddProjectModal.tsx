@@ -1,12 +1,12 @@
 import { Formik, Form } from "formik";
 import { Project, ProjectTag } from "../../types";
-import { Box } from "@chakra-ui/react";
+import { Box, Button } from "@chakra-ui/react";
 import TextField from "../fields/TextField";
 import SelectField from "../fields/SelectField";
-import TagSelector from "../Toolbar/TagSelector";
 import ProjectWikiURLField from "../fields/ProjectWikiURLField";
 import ProjectWikiFilepathField from "../fields/ProjectWikiFilepathField";
 import { useMultipleSelection } from "downshift";
+import TagSelectorField from "../fields/TagSelectorField";
 
 interface AddProjectModalProps {
   tags: ProjectTag[];
@@ -48,16 +48,25 @@ export default function AddProjectModal({
           </SelectField>
           <ProjectWikiURLField />
           <ProjectWikiFilepathField />
-          <TagSelector
+          <TagSelectorField
+            name="addProjectTagSelector"
+            addSelectedItem={addSelectedItem}
+            tags={tags}
+            fetchAppData={fetchAppData}
+            selectedItems={selectedItems}
+            removeSelectedItem={removeSelectedItem}
+          />
+          {/* <TagSelector
             name="addProjectTagSelector"
             tags={tags}
             fetchAppData={fetchAppData}
             selectedItems={selectedItems}
             addSelectedItem={addSelectedItem}
             removeSelectedItem={removeSelectedItem}
-          />
-          {/* <label htmlFor="tags">Tags</label>
-          <Field as="" name="tags" /> */}
+          /> */}
+          <Button backgroundColor="green" type="submit">
+            Submit
+          </Button>
         </Form>
       </Formik>
     </Box>
