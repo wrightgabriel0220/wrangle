@@ -24,12 +24,10 @@ function getRandomColor() {
 }
 
 const createTag = (name: string) => {
-  return db
-    ?.execute(
-      "INSERT INTO project_tags (name, description, color) VALUES ($1, $2, $3)",
-      [name, "", getRandomColor()]
-    )
-    .then((res) => console.log("insert res: ", res));
+  return db?.execute(
+    "INSERT INTO project_tags (name, description, color) VALUES ($1, $2, $3)",
+    [name, "", getRandomColor()]
+  );
 };
 
 export default function TagSelector({

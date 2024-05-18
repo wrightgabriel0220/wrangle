@@ -27,8 +27,6 @@ export default function Toolbar({
   const { selectedItems, addSelectedItem, removeSelectedItem } =
     useMultipleSelection<string>();
 
-  console.log("selected tags in Toolbar: ", selectedItems);
-
   return (
     <Box>
       <Flex zIndex="2">

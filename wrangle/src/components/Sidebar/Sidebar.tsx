@@ -25,7 +25,6 @@ export default function Sidebar({
   const openCreateViewModal = useCallback(() => {
     setModalContent(<CreateViewModal />);
     setIsModalOpen(true);
-    console.log("CLICKED!");
   }, [setIsModalOpen, setModalContent]);
 
   return (

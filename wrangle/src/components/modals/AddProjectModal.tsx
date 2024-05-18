@@ -17,9 +17,8 @@ export default function AddProjectModal({
   tags,
   fetchAppData,
 }: AddProjectModalProps) {
-  const { selectedItems, addSelectedItem } = useMultipleSelection<string>();
-
-  console.log("selected tags in AddProjectModal: ", selectedItems);
+  const { selectedItems, addSelectedItem, removeSelectedItem } =
+    useMultipleSelection<string>();
 
   return (
     <Box
@@ -55,6 +54,7 @@ export default function AddProjectModal({
             fetchAppData={fetchAppData}
             selectedItems={selectedItems}
             addSelectedItem={addSelectedItem}
+            removeSelectedItem={removeSelectedItem}
           />
           {/* <label htmlFor="tags">Tags</label>
           <Field as="" name="tags" /> */}

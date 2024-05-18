@@ -36,6 +36,7 @@ export default function Combobox({
     getMenuProps,
     getInputProps,
     getItemProps,
+    setInputValue: setDropshiftInputValue,
   } = useCombobox({
     onSelectedItemChange: (changes) => {
       addSelectedItem(changes.selectedItem);
@@ -46,18 +47,22 @@ export default function Combobox({
             option.startsWith(changes.inputValue ?? "")
         )
       );
+      setDropshiftInputValue("");
     },
     onInputValueChange: (changes) => {
       setInputValue(changes.inputValue);
       setVisibleValues(
-        options.filter((option) => option.startsWith(changes.inputValue))
+        options.filter(
+          (option) =>
+            option.startsWith(changes.inputValue) &&
+            !selectedItems.includes(option)
+        )
       );
     },
     items: visibleValues,
   });
 
   const clearSelectedItems = useCallback(() => {
-    console.log("CLEARING");
     selectedItems.forEach((item) => removeSelectedItem(item));
   }, [selectedItems, removeSelectedItem]);
 
