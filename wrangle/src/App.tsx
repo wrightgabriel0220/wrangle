@@ -120,6 +120,24 @@ const testProject13: Project = {
   tags: [],
 };
 
+const deleteProject = (id: string, fetchAppData: () => void) => {
+  db.execute("DELETE FROM projects WHERE id = $1;", [id]).then(() =>
+    fetchAppData()
+  );
+};
+
+const deleteTag = (id: string, fetchAppData: () => void) => {
+  db.execute("DELETE FROM project_tags WHERE id = $1;", [id]).then(() =>
+    fetchAppData()
+  );
+};
+
+const deleteView = (id: string, fetchAppData: () => void) => {
+  db.execute("DELETE FROM views WHERE id = $1;", [id]).then(() =>
+    fetchAppData()
+  );
+};
+
 function App() {
   const [selectedViewId, setSelectedViewId] = useState<string>(
     allProjectsView.id
@@ -144,6 +162,7 @@ function App() {
   const [selectedTags, setSelectedTags] = useState<ProjectTag[]>([]);
 
   const fetchAppData = useCallback(() => {
+    console.log("FETCHING");
     try {
       db.select<View[]>("SELECT * FROM views").then((queryRes) => {
         setViews([allProjectsView, testView1, testView2, ...queryRes]);
@@ -199,6 +218,9 @@ function App() {
           setSelectedViewId={setSelectedViewId}
           setModalContent={setModalContent}
           setIsModalOpen={setIsModalOpen}
+          deleteProject={(id: string) => deleteProject(id, fetchAppData)}
+          deleteTag={(id: string) => deleteTag(id, fetchAppData)}
+          deleteView={(id: string) => deleteView(id, fetchAppData)}
         />
         <div id="ui-pane">
           <Toolbar

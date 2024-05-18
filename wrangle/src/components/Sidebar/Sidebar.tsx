@@ -13,6 +13,9 @@ interface SidebarProps {
   setSelectedViewId: React.Dispatch<React.SetStateAction<string>>;
   setModalContent: React.Dispatch<React.SetStateAction<ReactNode>>;
   setIsModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  deleteProject: (id: string) => void;
+  deleteTag: (id: string) => void;
+  deleteView: (id: string) => void;
 }
 
 const versionNumber = 0.31;
@@ -20,6 +23,9 @@ const versionNumber = 0.31;
 export default function Sidebar({
   views,
   appData,
+  deleteProject,
+  deleteTag,
+  deleteView,
   selectedViewId,
   setSelectedViewId,
   setIsModalOpen,
@@ -31,9 +37,16 @@ export default function Sidebar({
   }, [setIsModalOpen, setModalContent]);
 
   const openMasterDataModal = useCallback(() => {
-    setModalContent(<MasterDataModal data={appData} />);
+    setModalContent(
+      <MasterDataModal
+        data={appData}
+        deleteProject={deleteProject}
+        deleteTag={deleteTag}
+        deleteView={deleteView}
+      />
+    );
     setIsModalOpen(true);
-  }, [setIsModalOpen, setModalContent]);
+  }, [setIsModalOpen, setModalContent, deleteProject, deleteTag, deleteView]);
 
   return (
     <div id="sidebar">
