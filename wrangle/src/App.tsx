@@ -167,7 +167,7 @@ function App() {
         ]);
         db.select<ProjectTag[]>("SELECT * FROM project_tags").then(
           (queryRes) => {
-            setTags(queryRes);
+            setTags([...queryRes]);
           }
         );
       });
@@ -193,6 +193,7 @@ function App() {
           setModalContent={setModalContent}
         />
         <Sidebar
+          appData={{ projects, tags, views }}
           views={views}
           selectedViewId={selectedViewId}
           setSelectedViewId={setSelectedViewId}

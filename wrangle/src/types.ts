@@ -31,6 +31,12 @@ export type Dashboard = {
   notes: string;
 };
 
+export interface AppData {
+  projects: Project[];
+  tags: ProjectTag[];
+  views: View[];
+}
+
 export interface SelectOption {
   display: string;
   value: any;

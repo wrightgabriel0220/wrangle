@@ -1,11 +1,13 @@
-import { Button } from "@chakra-ui/react";
-import { View } from "../../types";
+import { Box, Button } from "@chakra-ui/react";
+import { AppData, View } from "../../types";
 import SidebarTab from "./SidebarTab";
 import { CheckCircleIcon, PlusIcon } from "@heroicons/react/20/solid";
 import { ReactNode, useCallback } from "react";
 import CreateViewModal from "../modals/CreateViewModal";
+import MasterDataModal from "../modals/MasterDataModal";
 
 interface SidebarProps {
+  appData: AppData;
   views: View[];
   selectedViewId: string;
   setSelectedViewId: React.Dispatch<React.SetStateAction<string>>;
@@ -17,6 +19,7 @@ const versionNumber = 0.31;
 
 export default function Sidebar({
   views,
+  appData,
   selectedViewId,
   setSelectedViewId,
   setIsModalOpen,
@@ -24,6 +27,11 @@ export default function Sidebar({
 }: SidebarProps) {
   const openCreateViewModal = useCallback(() => {
     setModalContent(<CreateViewModal />);
+    setIsModalOpen(true);
+  }, [setIsModalOpen, setModalContent]);
+
+  const openMasterDataModal = useCallback(() => {
+    setModalContent(<MasterDataModal data={appData} />);
     setIsModalOpen(true);
   }, [setIsModalOpen, setModalContent]);
 
@@ -45,14 +53,24 @@ export default function Sidebar({
             />
           ))}
         </div>
-        <Button
-          onClick={openCreateViewModal}
-          width="100%"
-          height="10"
-          backgroundColor="#828282"
-        >
-          <PlusIcon height="100%" />
-        </Button>
+        <Box>
+          <Button
+            onClick={openMasterDataModal}
+            width="100%"
+            height="10"
+            backgroundColor="#828282"
+          >
+            Master Data
+          </Button>
+          <Button
+            onClick={openCreateViewModal}
+            width="100%"
+            height="10"
+            backgroundColor="#828282"
+          >
+            <PlusIcon height="100%" />
+          </Button>
+        </Box>
       </div>
     </div>
   );
