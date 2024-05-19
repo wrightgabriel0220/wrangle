@@ -76,6 +76,12 @@ fn main() {
             description: "modify_project_tags_add_color",
             sql: "ALTER TABLE project_tags ADD COLUMN color TEXT DEFAULT 000000",
             kind: MigrationKind::Up,
+        },
+        Migration {
+            version: 9,
+            description: "fix_project_wiki_type_validation",
+            sql: "ALTER TABLE projects DROP COLUMN wiki_type; ALTER TABLE projects ADD COLUMN wiki_type TEXT CHECK(wiki_type in ('MARKDOWN', 'WEB')) NULL",
+            kind: MigrationKind::Up,
         }
     ];
 
