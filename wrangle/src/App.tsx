@@ -80,10 +80,6 @@ function App() {
       .from(viewsSchema)
       .then((getViewsData: any[]) => setViews([...getViewsData]))
       .catch((err) => console.error("getViewsError: ", err));
-    // db.select()
-    //   .from(projectsSchema)
-    //   .then((getProjectsData: any[]) => setProjects([...getProjectsData]))
-    //   .catch((err) => console.error("getProjectsError: ", err));
     db.query.projectsSchema
       .findMany({
         with: {

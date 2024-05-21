@@ -41,19 +41,3 @@ export interface SelectOption {
   display: string;
   value: any;
 }
-
-// dashboards {
-// 	id integer pk increments unique
-// 	project_id integer > projects.id
-// 	dashboard_url varchar(255)
-// 	dashboard_type varchar(255)
-// 	notes varchar(255)
-// }
-
-// projects {
-// 	id integer pk increments unique
-// 	name varchar(255)
-// 	wiki_filepath varchar(255) null
-// 	wiki_url varchar(255) null
-// 	wiki_type varchar null
-// }
