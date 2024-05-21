@@ -33,7 +33,7 @@ export default function Project({ project }: ProjectProps) {
           </LinkOverlay>
         </LinkBox>
       )}
-      {project.tags.map((projectTag) => (
+      {project.tags?.map((projectTag) => (
         <Tag
           size="sm"
           variant="solid"

@@ -11,6 +11,7 @@ interface ComboboxListProps {
     index: number;
   }) => UseComboboxGetItemPropsReturnValue;
   createItem: (itemName: string) => void;
+  setInputValue: (input: string) => void;
   isOpen: boolean;
   inputValue: string;
   options: string[];
@@ -56,6 +57,7 @@ const ComboboxItem = forwardRef(
 export default function ComboboxList({
   getMenuProps,
   getItemProps,
+  setInputValue,
   isOpen,
   inputValue,
   options,
@@ -82,6 +84,7 @@ export default function ComboboxList({
         <Button
           onClick={() => {
             createItem(inputValue);
+            setInputValue("");
           }}
           backgroundColor="#FFFFFF"
           width="100%"

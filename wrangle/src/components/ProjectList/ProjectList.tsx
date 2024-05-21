@@ -19,7 +19,7 @@ export default function ProjectList({
       {activeView.name} View
       <div>
         {projects
-          .filter((project) => project.name.includes(searchQuery))
+          .filter((project) => project.name?.includes(searchQuery))
           .filter((project) =>
             selectedTags.every((selectedTag) =>
               project.tags.includes(selectedTag)

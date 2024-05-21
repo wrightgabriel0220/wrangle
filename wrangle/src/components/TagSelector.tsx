@@ -1,6 +1,7 @@
-import { ProjectTag } from "../../types";
-import Combobox from "../Combobox/Combobox";
-import Database from "@tauri-apps/plugin-sql";
+import { db } from "../db/database";
+import { tagsSchema } from "../db/schema";
+import { ProjectTag } from "../types";
+import Combobox from "./Combobox/Combobox";
 import { useMultipleSelection } from "downshift";
 
 interface TagSelectorProps {
@@ -12,22 +13,24 @@ interface TagSelectorProps {
   removeSelectedItem: (item: string) => void;
 }
 
-const db = await Database.load("sqlite:wrangle.db");
-
 function getRandomColor() {
   var letters = "0123456789ABCDEF";
-  var color = "#";
+  var color = "";
   for (var i = 0; i < 6; i++) {
     color += letters[Math.floor(Math.random() * 16)];
   }
   return color;
 }
 
-const createTag = (name: string) => {
-  return db?.execute(
-    "INSERT INTO project_tags (name, description, color) VALUES ($1, $2, $3)",
-    [name, "", getRandomColor()]
-  );
+const createTag = (name: string, fetchAppData: () => void) => {
+  return db
+    .insert(tagsSchema)
+    .values({
+      name,
+      color: getRandomColor(),
+    })
+    .then(() => fetchAppData())
+    .catch((err) => console.error("createTagError: ", err));
 };
 
 export default function TagSelector({
@@ -49,7 +52,7 @@ export default function TagSelector({
       placeholder="Search tags..."
       options={tags.map((tag) => tag.name)}
       createItem={(itemName) => {
-        createTag(itemName).then(() => fetchAppData());
+        createTag(itemName, fetchAppData);
       }}
       selectedItems={selectedItems ?? internalSelectedItems}
       addSelectedItem={addSelectedItem ?? internalAddSelectedItem}

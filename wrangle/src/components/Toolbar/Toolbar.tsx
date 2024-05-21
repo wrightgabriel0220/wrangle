@@ -1,10 +1,9 @@
 import { Box, Button, Flex } from "@chakra-ui/react";
 import { PlusIcon } from "@heroicons/react/20/solid";
 import SearchBar from "./SearchBar";
-import TagSelector from "./TagSelector";
+import TagSelector from "../TagSelector";
 import AddProjectModal from "../modals/AddProjectModal";
 import { ProjectTag } from "../../types";
-import Database from "@tauri-apps/plugin-sql";
 import { useMultipleSelection } from "downshift";
 import TagBar from "./TagBar";
 
@@ -15,7 +14,6 @@ interface ToolbarProps {
   setSelectedTags: React.Dispatch<React.SetStateAction<ProjectTag[]>>;
   fetchAppData: () => void;
   tags: ProjectTag[];
-  db: Database;
 }
 
 export default function Toolbar({

@@ -9,7 +9,7 @@ export default function TagBadge({ tag }: TagBadgeProps) {
   return (
     <Badge
       key={tag.id}
-      backgroundColor={tag.color}
+      backgroundColor={`#${tag.color}`}
       borderRadius="15px"
       p="3px"
       px="10px"

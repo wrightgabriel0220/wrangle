@@ -1,5 +1,4 @@
 import "./App.css";
-import Database from "@tauri-apps/plugin-sql";
 import { useCallback, useEffect, useState } from "react";
 import Sidebar from "./components/Sidebar/Sidebar";
 import Toolbar from "./components/Toolbar/Toolbar";
@@ -7,8 +6,9 @@ import { Alert, ChakraBaseProvider } from "@chakra-ui/react";
 import { Project, ProjectTag, View } from "./types";
 import ProjectList from "./components/ProjectList/ProjectList";
 import BaseModal from "./components/BaseModal";
-
-const db = await Database.load("sqlite:wrangle.db");
+import { db } from "./db/database";
+import { projectsSchema, tagsSchema, viewsSchema } from "./db/schema";
+import { eq } from "drizzle-orm";
 
 const allProjectsView: View = {
   id: "-1",
@@ -31,111 +31,31 @@ const testView2: View = {
   color: "FFFFFF",
 };
 
-// const TestTagAlpha: ProjectTag = {
-//   id: "-1",
-//   name: "alpha",
-//   description: "test tag alpha",
-//   color: "01FBAA",
-// };
-
-// const TestTagBeta: ProjectTag = {
-//   id: "-2",
-//   name: "beta",
-//   description: "test tag beta",
-//   color: "FF00BC",
-// };
-
-// const TestTagOmega: ProjectTag = {
-//   id: "-3",
-//   name: "omega",
-//   description: "test tag omega",
-//   color: "AB9A89",
-// };
-
-const testProject1: Project = {
-  id: "-1",
-  name: "Test Project 1",
-  wikiType: "WEB",
-  wikiURL: "https://www.homiehublab.com/",
-  tags: [],
-};
-const testProject2: Project = {
-  id: "-2",
-  name: "Test Project 2",
-  tags: [],
-};
-const testProject3: Project = {
-  id: "-3",
-  name: "Test Project 3",
-  tags: [],
-};
-const testProject4: Project = {
-  id: "-4",
-  name: "Test Project 4",
-  tags: [],
-};
-const testProject5: Project = {
-  id: "-5",
-  name: "Test Project 5",
-  tags: [],
-};
-const testProject6: Project = {
-  id: "-6",
-  name: "Test Project 6",
-  tags: [],
-};
-const testProject7: Project = {
-  id: "-7",
-  name: "Test Project 7",
-  tags: [],
-};
-const testProject8: Project = {
-  id: "-8",
-  name: "Test Project 8",
-  tags: [],
-};
-const testProject9: Project = {
-  id: "-9",
-  name: "Test Project 9",
-  tags: [],
-};
-const testProject10: Project = {
-  id: "-10",
-  name: "Test Project 10",
-  tags: [],
-};
-const testProject11: Project = {
-  id: "-11",
-  name: "Test Project 11",
-  tags: [],
-};
-const testProject12: Project = {
-  id: "-12",
-  name: "Test Project 12",
-  tags: [],
-};
-const testProject13: Project = {
-  id: "-13",
-  name: "Test Project 13",
-  tags: [],
-};
-
 const deleteProject = (id: string, fetchAppData: () => void) => {
-  db.execute("DELETE FROM projects WHERE id = $1;", [id]).then(() =>
-    fetchAppData()
-  );
+  db.delete(projectsSchema)
+    .where(eq(projectsSchema.id, Number(id)))
+    .catch((err) => console.error("deleteProject error: ", err))
+    .then(() => {
+      fetchAppData();
+    });
 };
 
 const deleteTag = (id: string, fetchAppData: () => void) => {
-  db.execute("DELETE FROM project_tags WHERE id = $1;", [id]).then(() =>
-    fetchAppData()
-  );
+  db.delete(tagsSchema)
+    .where(eq(tagsSchema.id, Number(id)))
+    .catch((err) => console.error("deleteTag error: ", err))
+    .then(() => {
+      fetchAppData();
+    });
 };
 
 const deleteView = (id: string, fetchAppData: () => void) => {
-  db.execute("DELETE FROM views WHERE id = $1;", [id]).then(() =>
-    fetchAppData()
-  );
+  db.delete(viewsSchema)
+    .where(eq(viewsSchema.id, Number(id)))
+    .catch((err) => console.error("deleteView error: ", err))
+    .then(() => {
+      fetchAppData();
+    });
 };
 
 function App() {
@@ -147,57 +67,50 @@ function App() {
     testView1,
     testView2,
   ]);
-  const [projects, setProjects] = useState<Project[]>([
-    testProject1,
-    testProject2,
-    testProject3,
-    testProject4,
-    testProject5,
-  ]);
+  const [projects, setProjects] = useState<Project[]>([]);
   const [tags, setTags] = useState<ProjectTag[]>([]);
-  const [errors, setErrors] = useState<Error[]>([]);
+  const [errors] = useState<Error[]>([]);
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [modalContent, setModalContent] = useState<React.ReactNode>(null);
   const [searchQuery, setSearchQuery] = useState<string>("");
   const [selectedTags, setSelectedTags] = useState<ProjectTag[]>([]);
 
   const fetchAppData = useCallback(() => {
-    console.log("FETCHING");
-    try {
-      db.select<View[]>("SELECT * FROM views").then((queryRes) => {
-        setViews([allProjectsView, testView1, testView2, ...queryRes]);
-      });
-      db.select<Project[]>("SELECT * FROM projects").then((queryRes) => {
-        setProjects([
-          testProject1,
-          testProject2,
-          testProject3,
-          testProject4,
-          testProject5,
-          testProject6,
-          testProject7,
-          testProject8,
-          testProject9,
-          testProject10,
-          testProject11,
-          testProject12,
-          testProject13,
-          ...queryRes,
-        ]);
-        db.select<ProjectTag[]>("SELECT * FROM project_tags").then(
-          (queryRes) => {
-            setTags([...queryRes]);
-          }
-        );
-      });
-    } catch (err) {
-      setErrors(errors.concat(err as Error));
-    }
+    db.select()
+      .from(viewsSchema)
+      .then((getViewsData: any[]) => setViews([...getViewsData]))
+      .catch((err) => console.error("getViewsError: ", err));
+    // db.select()
+    //   .from(projectsSchema)
+    //   .then((getProjectsData: any[]) => setProjects([...getProjectsData]))
+    //   .catch((err) => console.error("getProjectsError: ", err));
+    db.query.projectsSchema
+      .findMany({
+        with: {
+          projectsToTags: {
+            with: {
+              tags: true,
+            },
+          },
+        },
+      })
+      .then((getProjectsData: any[]) => setProjects([...getProjectsData]))
+      .catch((err) => console.error("getProjectsError: ", err));
+    db.select()
+      .from(tagsSchema)
+      .then((getTagsData: any[]) => setTags([...getTagsData]))
+      .catch((err) => console.error("getTagsError: ", err));
   }, []);
 
   useEffect(() => {
     fetchAppData();
   }, []);
+
+  useEffect(() => {
+    console.log("PROJECTS: ", projects);
+    console.log("TAGS: ", tags);
+    console.log("VIEWS: ", views);
+  }, [projects, tags, views]);
 
   const activeView =
     views.find((view) => view.id === selectedViewId) ?? allProjectsView;
@@ -229,7 +142,6 @@ function App() {
             setSearchQuery={setSearchQuery}
             setSelectedTags={setSelectedTags}
             tags={tags}
-            db={db}
             fetchAppData={fetchAppData}
           />
           {errors.map((error, iter) => (

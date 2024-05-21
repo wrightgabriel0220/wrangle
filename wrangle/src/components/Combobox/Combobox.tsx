@@ -84,6 +84,7 @@ export default function Combobox({
             getMenuProps={getMenuProps}
             getItemProps={getItemProps}
             createItem={createItem}
+            setInputValue={setDropshiftInputValue}
             addItemButtonText={addItemButtonText ?? ""}
             highlightedIndex={highlightedIndex}
             inputValue={inputValue}

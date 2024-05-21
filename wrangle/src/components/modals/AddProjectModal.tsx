@@ -56,14 +56,6 @@ export default function AddProjectModal({
             selectedItems={selectedItems}
             removeSelectedItem={removeSelectedItem}
           />
-          {/* <TagSelector
-            name="addProjectTagSelector"
-            tags={tags}
-            fetchAppData={fetchAppData}
-            selectedItems={selectedItems}
-            addSelectedItem={addSelectedItem}
-            removeSelectedItem={removeSelectedItem}
-          /> */}
           <Button backgroundColor="green" type="submit">
             Submit
           </Button>
