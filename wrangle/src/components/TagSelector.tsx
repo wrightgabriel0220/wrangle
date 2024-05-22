@@ -1,5 +1,3 @@
-import { db } from "../db/database";
-import { tagsSchema } from "../db/schema";
 import { ProjectTag } from "../types";
 import Combobox from "./Combobox/Combobox";
 import { useMultipleSelection } from "downshift";
@@ -13,24 +11,18 @@ interface TagSelectorProps {
   removeSelectedItem: (item: string) => void;
 }
 
-function getRandomColor() {
+const getRandomColor = () => {
   var letters = "0123456789ABCDEF";
   var color = "";
   for (var i = 0; i < 6; i++) {
     color += letters[Math.floor(Math.random() * 16)];
   }
   return color;
-}
+};
 
 const createTag = (name: string, fetchAppData: () => void) => {
-  return db
-    .insert(tagsSchema)
-    .values({
-      name,
-      color: getRandomColor(),
-    })
-    .then(() => fetchAppData())
-    .catch((err) => console.error("createTagError: ", err));
+  console.log("creating tag: ", name);
+  fetchAppData();
 };
 
 export default function TagSelector({

@@ -6,9 +6,6 @@ import { Alert, ChakraBaseProvider } from "@chakra-ui/react";
 import { Project, ProjectTag, View } from "./types";
 import ProjectList from "./components/ProjectList/ProjectList";
 import BaseModal from "./components/BaseModal";
-import { db } from "./db/database";
-import { projectsSchema, tagsSchema, viewsSchema } from "./db/schema";
-import { eq } from "drizzle-orm";
 
 const allProjectsView: View = {
   id: "-1",
@@ -32,30 +29,18 @@ const testView2: View = {
 };
 
 const deleteProject = (id: string, fetchAppData: () => void) => {
-  db.delete(projectsSchema)
-    .where(eq(projectsSchema.id, Number(id)))
-    .catch((err) => console.error("deleteProject error: ", err))
-    .then(() => {
-      fetchAppData();
-    });
+  console.log("deleting project: ", id);
+  fetchAppData();
 };
 
 const deleteTag = (id: string, fetchAppData: () => void) => {
-  db.delete(tagsSchema)
-    .where(eq(tagsSchema.id, Number(id)))
-    .catch((err) => console.error("deleteTag error: ", err))
-    .then(() => {
-      fetchAppData();
-    });
+  console.log("deleting tag: ", id);
+  fetchAppData();
 };
 
 const deleteView = (id: string, fetchAppData: () => void) => {
-  db.delete(viewsSchema)
-    .where(eq(viewsSchema.id, Number(id)))
-    .catch((err) => console.error("deleteView error: ", err))
-    .then(() => {
-      fetchAppData();
-    });
+  console.log("deleting view: ", id);
+  fetchAppData();
 };
 
 function App() {
@@ -76,26 +61,26 @@ function App() {
   const [selectedTags, setSelectedTags] = useState<ProjectTag[]>([]);
 
   const fetchAppData = useCallback(() => {
-    db.select()
-      .from(viewsSchema)
-      .then((getViewsData: any[]) => setViews([...getViewsData]))
-      .catch((err) => console.error("getViewsError: ", err));
-    db.query.projectsSchema
-      .findMany({
-        with: {
-          projectsToTags: {
-            with: {
-              tags: true,
-            },
-          },
-        },
-      })
-      .then((getProjectsData: any[]) => setProjects([...getProjectsData]))
-      .catch((err) => console.error("getProjectsError: ", err));
-    db.select()
-      .from(tagsSchema)
-      .then((getTagsData: any[]) => setTags([...getTagsData]))
-      .catch((err) => console.error("getTagsError: ", err));
+    // db.select()
+    //   .from(viewsSchema)
+    //   .then((getViewsData: any[]) => setViews([...getViewsData]))
+    //   .catch((err) => console.error("getViewsError: ", err));
+    // db.query.projectsSchema
+    //   .findMany({
+    //     with: {
+    //       projectsToTags: {
+    //         with: {
+    //           tags: true,
+    //         },
+    //       },
+    //     },
+    //   })
+    //   .then((getProjectsData: any[]) => setProjects([...getProjectsData]))
+    //   .catch((err) => console.error("getProjectsError: ", err));
+    // db.select()
+    //   .from(tagsSchema)
+    //   .then((getTagsData: any[]) => setTags([...getTagsData]))
+    //   .catch((err) => console.error("getTagsError: ", err));
   }, []);
 
   useEffect(() => {

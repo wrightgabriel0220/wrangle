@@ -2,13 +2,8 @@
   "identifier": "migrated",
   "description": "permissions that were migrated from v1",
   "local": true,
-  "windows": [
-    "main"
-  ],
+  "windows": ["main"],
   "permissions": [
-    "sql:allow-load",
-    "sql:allow-select",
-    "sql:allow-execute",
     "path:default",
     "event:default",
     "window:default",

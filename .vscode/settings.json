@@ -1,0 +1,3 @@
+{
+  "rust-analyzer.linkedProjects": ["./wrangle/src-tauri/Cargo.toml"]
+}
