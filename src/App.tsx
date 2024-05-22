@@ -1,52 +1,146 @@
-import { useState } from "react";
-import reactLogo from "./assets/react.svg";
-import { invoke } from "@tauri-apps/api/tauri";
 import "./App.css";
+import { useCallback, useEffect, useState } from "react";
+import Sidebar from "./components/Sidebar/Sidebar";
+import Toolbar from "./components/Toolbar/Toolbar";
+import { Alert, ChakraBaseProvider } from "@chakra-ui/react";
+import { Project, ProjectTag, View } from "./types";
+import ProjectList from "./components/ProjectList/ProjectList";
+import BaseModal from "./components/BaseModal";
+
+const allProjectsView: View = {
+  id: "-1",
+  name: "All Projects",
+  filepath: "",
+  color: "000000",
+};
+
+const testView1: View = {
+  id: "-2",
+  name: "Test 1",
+  filepath: "",
+  color: "AAAAAA",
+};
+
+const testView2: View = {
+  id: "-3",
+  name: "Test 2",
+  filepath: "",
+  color: "FFFFFF",
+};
+
+const deleteProject = (id: string, fetchAppData: () => void) => {
+  console.log("deleting project: ", id);
+  fetchAppData();
+};
+
+const deleteTag = (id: string, fetchAppData: () => void) => {
+  console.log("deleting tag: ", id);
+  fetchAppData();
+};
+
+const deleteView = (id: string, fetchAppData: () => void) => {
+  console.log("deleting view: ", id);
+  fetchAppData();
+};
 
 function App() {
-  const [greetMsg, setGreetMsg] = useState("");
-  const [name, setName] = useState("");
+  const [selectedViewId, setSelectedViewId] = useState<string>(
+    allProjectsView.id
+  );
+  const [views, setViews] = useState<View[]>([
+    allProjectsView,
+    testView1,
+    testView2,
+  ]);
+  const [projects, setProjects] = useState<Project[]>([]);
+  const [tags, setTags] = useState<ProjectTag[]>([]);
+  const [errors] = useState<Error[]>([]);
+  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+  const [modalContent, setModalContent] = useState<React.ReactNode>(null);
+  const [searchQuery, setSearchQuery] = useState<string>("");
+  const [selectedTags, setSelectedTags] = useState<ProjectTag[]>([]);
 
-  async function greet() {
-    // Learn more about Tauri commands at https://tauri.app/v1/guides/features/command
-    setGreetMsg(await invoke("greet", { name }));
-  }
+  const fetchAppData = useCallback(() => {
+    // db.select()
+    //   .from(viewsSchema)
+    //   .then((getViewsData: any[]) => setViews([...getViewsData]))
+    //   .catch((err) => console.error("getViewsError: ", err));
+    // db.query.projectsSchema
+    //   .findMany({
+    //     with: {
+    //       projectsToTags: {
+    //         with: {
+    //           tags: true,
+    //         },
+    //       },
+    //     },
+    //   })
+    //   .then((getProjectsData: any[]) => setProjects([...getProjectsData]))
+    //   .catch((err) => console.error("getProjectsError: ", err));
+    // db.select()
+    //   .from(tagsSchema)
+    //   .then((getTagsData: any[]) => setTags([...getTagsData]))
+    //   .catch((err) => console.error("getTagsError: ", err));
+  }, []);
+
+  useEffect(() => {
+    fetchAppData();
+  }, []);
+
+  useEffect(() => {
+    console.log("PROJECTS: ", projects);
+    console.log("TAGS: ", tags);
+    console.log("VIEWS: ", views);
+  }, [projects, tags, views]);
+
+  const activeView =
+    views.find((view) => view.id === selectedViewId) ?? allProjectsView;
 
   return (
-    <div className="container">
-      <h1>Welcome to Tauri!</h1>
-
-      <div className="row">
-        <a href="https://vitejs.dev" target="_blank">
-          <img src="/vite.svg" className="logo vite" alt="Vite logo" />
-        </a>
-        <a href="https://tauri.app" target="_blank">
-          <img src="/tauri.svg" className="logo tauri" alt="Tauri logo" />
-        </a>
-        <a href="https://reactjs.org" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-
-      <p>Click on the Tauri, Vite, and React logos to learn more.</p>
-
-      <form
-        className="row"
-        onSubmit={(e) => {
-          e.preventDefault();
-          greet();
-        }}
-      >
-        <input
-          id="greet-input"
-          onChange={(e) => setName(e.currentTarget.value)}
-          placeholder="Enter a name..."
+    <ChakraBaseProvider>
+      <div className="container">
+        <BaseModal
+          isModalOpen={isModalOpen}
+          modalContent={modalContent}
+          setIsModalOpen={setIsModalOpen}
+          setModalContent={setModalContent}
         />
-        <button type="submit">Greet</button>
-      </form>
-
-      <p>{greetMsg}</p>
-    </div>
+        <Sidebar
+          appData={{ projects, tags, views }}
+          views={views}
+          selectedViewId={selectedViewId}
+          setSelectedViewId={setSelectedViewId}
+          setModalContent={setModalContent}
+          setIsModalOpen={setIsModalOpen}
+          deleteProject={(id: string) => deleteProject(id, fetchAppData)}
+          deleteTag={(id: string) => deleteTag(id, fetchAppData)}
+          deleteView={(id: string) => deleteView(id, fetchAppData)}
+        />
+        <div id="ui-pane">
+          <Toolbar
+            setModalContent={setModalContent}
+            setIsModalOpen={setIsModalOpen}
+            setSearchQuery={setSearchQuery}
+            setSelectedTags={setSelectedTags}
+            tags={tags}
+            fetchAppData={fetchAppData}
+          />
+          {errors.map((error, iter) => (
+            <Alert
+              key={`${error.name}-${iter}`}
+              color="yellow"
+              content={`${error.name}: ${error.message}`}
+            />
+          ))}
+          <ProjectList
+            projects={projects}
+            activeView={activeView}
+            searchQuery={searchQuery}
+            selectedTags={selectedTags}
+          />
+        </div>
+      </div>
+    </ChakraBaseProvider>
   );
 }
 
