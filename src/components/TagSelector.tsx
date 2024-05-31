@@ -1,29 +1,17 @@
-import { ProjectTag } from "../types";
+import { Tag, createTauRPCProxy } from "../../bindings";
 import Combobox from "./Combobox/Combobox";
 import { useMultipleSelection } from "downshift";
 
+const taurpc = await createTauRPCProxy();
+
 interface TagSelectorProps {
   name: string;
-  tags: ProjectTag[];
+  tags: Tag[];
   fetchAppData: () => void;
   selectedItems: string[];
   addSelectedItem: (item: string) => void;
   removeSelectedItem: (item: string) => void;
 }
-
-const getRandomColor = () => {
-  var letters = "0123456789ABCDEF";
-  var color = "";
-  for (var i = 0; i < 6; i++) {
-    color += letters[Math.floor(Math.random() * 16)];
-  }
-  return color;
-};
-
-const createTag = (name: string, fetchAppData: () => void) => {
-  console.log("creating tag: ", name);
-  fetchAppData();
-};
 
 export default function TagSelector({
   tags,
@@ -44,7 +32,9 @@ export default function TagSelector({
       placeholder="Search tags..."
       options={tags.map((tag) => tag.name)}
       createItem={(itemName) => {
-        createTag(itemName, fetchAppData);
+        taurpc.create_tag(itemName).then(() => {
+          fetchAppData();
+        });
       }}
       selectedItems={selectedItems ?? internalSelectedItems}
       addSelectedItem={addSelectedItem ?? internalAddSelectedItem}

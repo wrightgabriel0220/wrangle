@@ -72,7 +72,7 @@ impl From<DBProject> for Project {
 trait API {
     async fn create_project(new_project: Project) -> bool;
 
-    async fn create_tag();
+    async fn create_tag(name: String) -> bool;
 
     async fn create_view();
 
@@ -135,7 +135,7 @@ impl API for APIImplementation {
                 let result = add_project_with_client(client, new_project_input).await;
                 match result {
                     Ok(_result) => {
-                        return true;
+                        return true
                     },
                     Err(error) => {
                         println!("There was an error querying the DB to create a project: {}", error);
@@ -150,8 +150,29 @@ impl API for APIImplementation {
         return true;
     }
 
-    async fn create_tag(self) {
-        println!("CREATING TAG");
+    async fn create_tag(self, name: String) -> bool {
+        let client = PrismaClient::_builder().build().await;
+        println!("CREATING TAG: {}", name);
+        let randomColor = "#000000";
+
+        match client {
+            Ok(client) => {
+                let new_tag = client.tag().create(name, randomColor.to_owned(), vec![]).exec().await;
+                match new_tag {
+                    Ok(_result) => {
+                        return true;
+                    },
+                    Err(error) => {
+                        println!("There was an error querying the DB to create a tag: {:?}", error);
+                    }
+                }
+                return false;
+            },
+            Err(error) => {
+                println!("There was an error connecting to the database while attempting to create a tag: {}", error);
+            }
+        }
+        return false;
     }
 
     async fn create_view(self) {
