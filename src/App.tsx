@@ -71,7 +71,7 @@ function App() {
     //   .then((getTagsData: any[]) => setTags([...getTagsData]))
     //   .catch((err) => console.error("getTagsError: ", err));
     taurpc.get_projects().then((projects) => setProjects(projects));
-    taurpc.get_tags();
+    taurpc.get_tags().then((tags) => setTags(tags));
     taurpc.get_views();
   }, []);
 

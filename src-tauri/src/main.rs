@@ -76,7 +76,7 @@ trait API {
 
     async fn create_view();
 
-    async fn get_tags();
+    async fn get_tags() -> Vec<Tag>;
 
     async fn get_views();
 
@@ -179,8 +179,17 @@ impl API for APIImplementation {
         println!("CREATING VIEW");
     }
 
-    async fn get_tags(self) {
-        println!("FETCHING TAGS");
+    async fn get_tags(self) -> Vec<Tag> {
+        let mut tags = Vec::new();
+
+        if let Ok(client) = PrismaClient::_builder().build().await {
+            let db_tags = client.tag().find_many(vec![]).exec().await.unwrap();
+            tags = db_tags.iter().map(|db_tag| Tag::from(db_tag.to_owned())).collect();
+        }
+
+        println!("tags: {:?}", tags);
+
+        return tags;
     }
 
     async fn get_views(self) {
