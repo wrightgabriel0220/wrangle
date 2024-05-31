@@ -7176,6 +7176,7 @@ dependencies = [
  "tauri",
  "tauri-build",
  "taurpc",
+ "tokio",
 ]
 
 [[package]]

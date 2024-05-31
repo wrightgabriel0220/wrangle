@@ -1,11 +1,12 @@
-import { ProjectTag, Project as ProjectType, View } from "../../types";
+import { View } from "../../types";
+import { Project as ProjectType, Tag } from "../../../bindings";
 import Project from "./Project";
 
 interface ProjectListProps {
   projects: ProjectType[];
   activeView: View;
   searchQuery: string;
-  selectedTags: ProjectTag[];
+  selectedTags: Tag[];
 }
 
 export default function ProjectList({

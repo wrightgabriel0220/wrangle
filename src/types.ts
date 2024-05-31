@@ -1,3 +1,5 @@
+import { Project, Tag } from "../bindings";
+
 export type View = {
   id: string;
   name: string;
@@ -6,22 +8,22 @@ export type View = {
   color: string;
 };
 
-export type Project = {
-  id: string;
-  name: string;
-  wikiFilepath?: string;
-  wikiURL?: string;
-  wikiType?: "MARKDOWN" | "WEB" | "";
-  dashboard?: Dashboard;
-  tags: ProjectTag[];
-};
+// export type Project = {
+//   id: string;
+//   name: string;
+//   wikiFilepath?: string;
+//   wikiURL?: string;
+//   wikiType?: "MARKDOWN" | "WEB" | "";
+//   dashboard?: Dashboard;
+//   tags: ProjectTag[];
+// };
 
-export type ProjectTag = {
-  id: string;
-  name: string;
-  description?: string;
-  color: string;
-};
+// export type ProjectTag = {
+//   id: string;
+//   name: string;
+//   description?: string;
+//   color: string;
+// };
 
 export type Dashboard = {
   id: string;
@@ -33,7 +35,7 @@ export type Dashboard = {
 
 export interface AppData {
   projects: Project[];
-  tags: ProjectTag[];
+  tags: Tag[];
   views: View[];
 }
 

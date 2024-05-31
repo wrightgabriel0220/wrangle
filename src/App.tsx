@@ -3,9 +3,11 @@ import { useCallback, useEffect, useState } from "react";
 import Sidebar from "./components/Sidebar/Sidebar";
 import Toolbar from "./components/Toolbar/Toolbar";
 import { Alert, ChakraBaseProvider } from "@chakra-ui/react";
-import { Project, ProjectTag, View } from "./types";
+import { View } from "./types";
+import { Project, Tag } from "../bindings.ts";
 import ProjectList from "./components/ProjectList/ProjectList";
 import BaseModal from "./components/BaseModal";
+import { createTauRPCProxy } from "../bindings.ts";
 
 const allProjectsView: View = {
   id: "-1",
@@ -28,20 +30,7 @@ const testView2: View = {
   color: "FFFFFF",
 };
 
-const deleteProject = (id: string, fetchAppData: () => void) => {
-  console.log("deleting project: ", id);
-  fetchAppData();
-};
-
-const deleteTag = (id: string, fetchAppData: () => void) => {
-  console.log("deleting tag: ", id);
-  fetchAppData();
-};
-
-const deleteView = (id: string, fetchAppData: () => void) => {
-  console.log("deleting view: ", id);
-  fetchAppData();
-};
+const taurpc = await createTauRPCProxy();
 
 function App() {
   const [selectedViewId, setSelectedViewId] = useState<string>(
@@ -53,12 +42,12 @@ function App() {
     testView2,
   ]);
   const [projects, setProjects] = useState<Project[]>([]);
-  const [tags, setTags] = useState<ProjectTag[]>([]);
+  const [tags, setTags] = useState<Tag[]>([]);
   const [errors] = useState<Error[]>([]);
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [modalContent, setModalContent] = useState<React.ReactNode>(null);
   const [searchQuery, setSearchQuery] = useState<string>("");
-  const [selectedTags, setSelectedTags] = useState<ProjectTag[]>([]);
+  const [selectedTags, setSelectedTags] = useState<Tag[]>([]);
 
   const fetchAppData = useCallback(() => {
     // db.select()
@@ -81,17 +70,20 @@ function App() {
     //   .from(tagsSchema)
     //   .then((getTagsData: any[]) => setTags([...getTagsData]))
     //   .catch((err) => console.error("getTagsError: ", err));
+    taurpc.get_projects().then((projects) => setProjects(projects));
+    taurpc.get_tags();
+    taurpc.get_views();
   }, []);
 
   useEffect(() => {
     fetchAppData();
   }, []);
 
-  useEffect(() => {
-    console.log("PROJECTS: ", projects);
-    console.log("TAGS: ", tags);
-    console.log("VIEWS: ", views);
-  }, [projects, tags, views]);
+  // useEffect(() => {
+  //   console.log("PROJECTS: ", projects);
+  //   console.log("TAGS: ", tags);
+  //   console.log("VIEWS: ", views);
+  // }, [projects, tags, views]);
 
   const activeView =
     views.find((view) => view.id === selectedViewId) ?? allProjectsView;
@@ -112,9 +104,9 @@ function App() {
           setSelectedViewId={setSelectedViewId}
           setModalContent={setModalContent}
           setIsModalOpen={setIsModalOpen}
-          deleteProject={(id: string) => deleteProject(id, fetchAppData)}
-          deleteTag={(id: string) => deleteTag(id, fetchAppData)}
-          deleteView={(id: string) => deleteView(id, fetchAppData)}
+          deleteProject={(id: string) => taurpc.delete_project()}
+          deleteTag={(id: string) => taurpc.delete_tag()}
+          deleteView={(id: string) => taurpc.delete_view()}
         />
         <div id="ui-pane">
           <Toolbar

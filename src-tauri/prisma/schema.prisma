@@ -9,25 +9,35 @@ generator client {
 }
 
 model Project {
-  id            String    @id
+  id            String                @id @default(cuid())
   name          String
-  wikiType      String
+  wikiType      String?
   wikiURL       String?
   wikiFilepath  String?
   tags          Tag[]
+  tagRelations  ProjectTagRelation[]
 }
 
 model Tag {
-  id            String    @id
-  name          String    @unique
-  description   String?
-  color         String
-  projects      Project[]
-  views         View[]
+  id                String                @id @default(cuid())
+  name              String                @unique
+  description       String?
+  color             String
+  projects          Project[]
+  projectRelations  ProjectTagRelation[]
+  views             View[]
+}
+
+model ProjectTagRelation {
+  project_id    String
+  tag_id        String
+  project       Project                   @relation(fields: [project_id], references: [id], onDelete: Cascade)
+  tag           Tag                       @relation(fields: [tag_id], references: [id], onDelete: Cascade)
+  @@id([project_id, tag_id])
 }
 
 model View {
-  id            String    @id
+  id            String    @id @default(cuid())
   name          String
   color         String
   tags          Tag[]
