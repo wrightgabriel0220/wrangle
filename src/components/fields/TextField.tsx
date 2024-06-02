@@ -1,15 +1,17 @@
-import { Box } from "@chakra-ui/react";
+import { Box, FormLabel } from "@chakra-ui/react";
 import { Field } from "formik";
 
 interface TextFieldProps {
   name: string;
   isHidden?: boolean;
   label?: string;
+  labelColor?: string;
 }
 
 export default function TextField({
   name,
   label,
+  labelColor = "#000000",
   isHidden = false,
 }: TextFieldProps) {
   return (
@@ -20,7 +22,9 @@ export default function TextField({
       my="10px"
       hidden={isHidden}
     >
-      <label htmlFor={name}>{label ?? name}</label>
+      <FormLabel htmlFor={name} color={labelColor}>
+        {label ?? name}
+      </FormLabel>
       <Field type="text" name={name} />
     </Box>
   );

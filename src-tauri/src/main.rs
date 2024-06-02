@@ -8,16 +8,12 @@ use std::borrow::Borrow;
 use std::fmt;
 
 use prisma::project::Data as DBProject;
-use prisma::project_tag_relation;
 use prisma::tag::Data as DBTag;
 use prisma::PrismaClient;
-use prisma::project;
-use prisma::tag;
 use prisma_client_rust::QueryError as QueryError;
 use taurpc::Router;
 use taurpc::procedures;
 use taurpc::ipc_type;
-use tokio::join;
 
 impl From<DBTag> for Tag {
     fn from(db_tag: DBTag) -> Self {
@@ -44,6 +40,7 @@ impl fmt::Debug for Tag {
     }
 }
 
+
 #[ipc_type]
 struct Project {
     id: String,
@@ -62,7 +59,8 @@ impl From<DBProject> for Project {
         Project {
             id: db_project.id,
             name: db_project.name,
-            tags: db_project.tags.unwrap_or(vec![]).iter().map(|db_project_tag| Tag::from(db_project_tag.to_owned())).collect(),
+            tags: vec![]
+            // tags: db_project.tags.unwrap_or(vec![]).iter().map(|db_project_tag| Tag::from(db_project_tag.to_owned())).collect(),
         }
     }
 }
@@ -98,32 +96,33 @@ impl API for APIImplementation {
         let client = PrismaClient::_builder().build().await;
         println!("CREATING PROJECT: {:?}", new_project_input);
 
-        async fn add_project_with_client(client: PrismaClient, new_project_input: Project) -> Result<Project, QueryError> {
+        async fn add_project_with_client(client: PrismaClient, new_project_input: &Project) -> Result<Project, QueryError> {
             println!("new_project_input.tags: {:?}", new_project_input.tags);
-            let new_db_project = client.project().create(new_project_input.name, vec![]).exec().await;
+            let new_db_project = client.project().create(new_project_input.clone().name, vec![]).exec().await;
 
-            async fn add_project_tag_relation(client: &PrismaClient, project: &Project, tag: &Tag) -> Option<project_tag_relation::Data> {
-                println!("tag: {:?}", tag);
-                let create_relation_res = client.project_tag_relation().create(project::id::equals(project.id.clone()), tag::id::equals(tag.id.clone()), vec![]).exec().await;
-                match create_relation_res {
-                    Ok(create_relation_res) => {
-                        println!("Successfully added tag {} to project {}!", tag.name, project.name);
-                        return Some(create_relation_res);
-                    },
-                    Err(_err) => {
-                        println!("There was an error adding the tag {} to the project {}!", tag.name, project.name);
-                        None
-                    }
-                }
-            }
+            // TODO: Get this working. Currently commenting out as, to my understanding, PCR is not yet capable of handling this kind of many-to-many? at least not directly? idk. i couldn't figure this out myself.
+            // async fn add_project_tag_relation(client: &PrismaClient, project: &Project, tag: &Tag) -> Option<project_tag_relation::Data> {
+            //     println!("tag: {:?}", tag);
+            //     let create_relation_res = client.project_tag_relation().create(project::id::equals(project.id.clone()), tag::id::equals(tag.id.clone()), vec![]).exec().await;
+            //     match create_relation_res {
+            //         Ok(create_relation_res) => {
+            //             println!("Successfully added tag {} to project {}!", tag.name, project.name);
+            //             return Some(create_relation_res);
+            //         },
+            //         Err(err) => {
+            //             println!("There was an error adding the tag {} to the project {}: {}", tag.name, project.name, err);
+            //             None
+            //         }
+            //     }
+            // }
 
             match new_db_project {
                 Ok(new_db_project) => {
                     let new_project = Project::from(new_db_project);
-                    for tag in new_project.tags.iter() {
-                        add_project_tag_relation(client.borrow(), new_project.borrow(), tag).await;
-                    }
-                    println!("Added tags for new project: {:?}", new_project.tags);
+                    // for tag in new_project_input.tags.iter() {
+                    //     add_project_tag_relation(client.borrow(), new_project_input, tag).await;
+                    // }
+                    // println!("Added tags for new project: {:?}", new_project_input.tags);
                     return Ok(new_project);
                 },
                 Err(error) => { return Err(error)},
@@ -132,7 +131,7 @@ impl API for APIImplementation {
 
         match client {
             Ok(client) => {
-                let result = add_project_with_client(client, new_project_input).await;
+                let result = add_project_with_client(client, new_project_input.borrow()).await;
                 match result {
                     Ok(_result) => {
                         return true
@@ -153,11 +152,11 @@ impl API for APIImplementation {
     async fn create_tag(self, name: String) -> bool {
         let client = PrismaClient::_builder().build().await;
         println!("CREATING TAG: {}", name);
-        let randomColor = "#000000";
+        let random_color = "#000000";
 
         match client {
             Ok(client) => {
-                let new_tag = client.tag().create(name, randomColor.to_owned(), vec![]).exec().await;
+                let new_tag = client.tag().create(name, random_color.to_owned(), vec![]).exec().await;
                 match new_tag {
                     Ok(_result) => {
                         return true;

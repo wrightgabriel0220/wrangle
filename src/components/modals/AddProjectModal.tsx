@@ -24,7 +24,6 @@ export default function AddProjectModal({
 
   return (
     <Box
-      color="white"
       backgroundColor="black"
       height="100%"
       width="100%"
@@ -45,8 +44,8 @@ export default function AddProjectModal({
         }}
       >
         <Form id="add-project-modal-form">
-          <TextField name="name" label="Name" />
-          <SelectField name="wikiType" label="Wiki Type">
+          <TextField name="name" label="Name" labelColor="#FFFFFF" />
+          <SelectField name="wikiType" label="Wiki Type" labelColor="#FFFFFF">
             <option value="">N/A</option>
             <option value="MARKDOWN">Markdown</option>
             <option value="WEB">Web</option>
