@@ -16,31 +16,13 @@ const allProjectsView: View = {
   color: "000000",
 };
 
-const testView1: View = {
-  id: "-2",
-  name: "Test 1",
-  filepath: "",
-  color: "AAAAAA",
-};
-
-const testView2: View = {
-  id: "-3",
-  name: "Test 2",
-  filepath: "",
-  color: "FFFFFF",
-};
-
 const taurpc = await createTauRPCProxy();
 
 function App() {
   const [selectedViewId, setSelectedViewId] = useState<string>(
     allProjectsView.id
   );
-  const [views, setViews] = useState<View[]>([
-    allProjectsView,
-    testView1,
-    testView2,
-  ]);
+  const [views, setViews] = useState<View[]>([allProjectsView]);
   const [projects, setProjects] = useState<Project[]>([]);
   const [tags, setTags] = useState<Tag[]>([]);
   const [errors] = useState<Error[]>([]);
@@ -104,7 +86,9 @@ function App() {
           setSelectedViewId={setSelectedViewId}
           setModalContent={setModalContent}
           setIsModalOpen={setIsModalOpen}
-          deleteProject={(id: string) => taurpc.delete_project()}
+          deleteProject={(id: string) =>
+            taurpc.delete_project(id).then(() => fetchAppData())
+          }
           deleteTag={(id: string) => taurpc.delete_tag()}
           deleteView={(id: string) => taurpc.delete_view()}
         />

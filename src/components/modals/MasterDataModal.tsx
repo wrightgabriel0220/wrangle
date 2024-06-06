@@ -1,5 +1,6 @@
 import { Flex, Heading, IconButton, List, ListItem } from "@chakra-ui/react";
-import { AppData, Project, ProjectTag, View } from "../../types";
+import { AppData } from "../../types";
+import { Project, Tag } from "../../../bindings";
 import { XMarkIcon } from "@heroicons/react/20/solid";
 
 interface MasterDataModalProps {
@@ -10,7 +11,7 @@ interface MasterDataModalProps {
 }
 
 interface DatalistEntryProps {
-  item: Project | ProjectTag | View;
+  item: Project | Tag;
   deleteItem: () => void;
 }
 
@@ -69,7 +70,7 @@ export default function MasterDataModal({
         </List>
       </Flex>
 
-      <Flex direction="column" backgroundColor="#001166" width="50%">
+      {/* <Flex direction="column" backgroundColor="#001166" width="50%">
         <Heading fontWeight="boldest" fontSize="x-large">
           Views
         </Heading>
@@ -78,7 +79,7 @@ export default function MasterDataModal({
             <DatalistEntry item={view} deleteItem={() => deleteView(view.id)} />
           ))}
         </List>
-      </Flex>
+      </Flex> */}
     </Flex>
   );
 }

@@ -7,6 +7,7 @@ mod prisma;
 use std::borrow::Borrow;
 use std::fmt;
 
+use prisma::project;
 use prisma::project::Data as DBProject;
 use prisma::tag::Data as DBTag;
 use prisma::PrismaClient;
@@ -82,7 +83,7 @@ trait API {
 
     async fn get_projects() -> Vec<Project>;
 
-    async fn delete_project();
+    async fn delete_project(id: String) -> bool;
 
     async fn delete_tag();
 
@@ -210,8 +211,23 @@ impl API for APIImplementation {
         return projects;
     }
 
-    async fn delete_project(self) {
+    async fn delete_project(self, id: String) -> bool {
         println!("DELETING PROJECT");
+        if let Ok(client) = PrismaClient::_builder().build().await {
+            let result = client.project().delete(project::id::equals(id.to_owned())).exec().await;
+            match result {
+                Ok(_result) => {
+                    return true;
+                },
+                Err(_err) => {
+                    println!("There was an error deleting project w/ id: {}", id);
+                    return false;
+                },
+            }
+        } else {
+            println!("There was an error connecting the db client in delete_project");
+            return false;
+        }
     }
 
     async fn delete_tag(self) {
