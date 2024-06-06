@@ -22,7 +22,7 @@ function App() {
   const [selectedViewId, setSelectedViewId] = useState<string>(
     allProjectsView.id
   );
-  const [views, setViews] = useState<View[]>([allProjectsView]);
+  const [views] = useState<View[]>([allProjectsView]);
   const [projects, setProjects] = useState<Project[]>([]);
   const [tags, setTags] = useState<Tag[]>([]);
   const [errors] = useState<Error[]>([]);
@@ -32,26 +32,6 @@ function App() {
   const [selectedTags, setSelectedTags] = useState<Tag[]>([]);
 
   const fetchAppData = useCallback(() => {
-    // db.select()
-    //   .from(viewsSchema)
-    //   .then((getViewsData: any[]) => setViews([...getViewsData]))
-    //   .catch((err) => console.error("getViewsError: ", err));
-    // db.query.projectsSchema
-    //   .findMany({
-    //     with: {
-    //       projectsToTags: {
-    //         with: {
-    //           tags: true,
-    //         },
-    //       },
-    //     },
-    //   })
-    //   .then((getProjectsData: any[]) => setProjects([...getProjectsData]))
-    //   .catch((err) => console.error("getProjectsError: ", err));
-    // db.select()
-    //   .from(tagsSchema)
-    //   .then((getTagsData: any[]) => setTags([...getTagsData]))
-    //   .catch((err) => console.error("getTagsError: ", err));
     taurpc.get_projects().then((projects) => setProjects(projects));
     taurpc.get_tags().then((tags) => setTags(tags));
     taurpc.get_views();
@@ -60,12 +40,6 @@ function App() {
   useEffect(() => {
     fetchAppData();
   }, []);
-
-  // useEffect(() => {
-  //   console.log("PROJECTS: ", projects);
-  //   console.log("TAGS: ", tags);
-  //   console.log("VIEWS: ", views);
-  // }, [projects, tags, views]);
 
   const activeView =
     views.find((view) => view.id === selectedViewId) ?? allProjectsView;
@@ -89,8 +63,8 @@ function App() {
           deleteProject={(id: string) =>
             taurpc.delete_project(id).then(() => fetchAppData())
           }
-          deleteTag={(id: string) => taurpc.delete_tag()}
-          deleteView={(id: string) => taurpc.delete_view()}
+          deleteTag={(_id: string) => taurpc.delete_tag()}
+          deleteView={(_id: string) => taurpc.delete_view()}
         />
         <div id="ui-pane">
           <Toolbar
@@ -98,6 +72,7 @@ function App() {
             setIsModalOpen={setIsModalOpen}
             setSearchQuery={setSearchQuery}
             setSelectedTags={setSelectedTags}
+            searchQuery={searchQuery}
             tags={tags}
             fetchAppData={fetchAppData}
           />

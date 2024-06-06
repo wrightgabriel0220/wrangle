@@ -1,9 +1,9 @@
 import { Flex } from "@chakra-ui/react";
-import { ProjectTag } from "../../types";
+import { Tag } from "../../../bindings";
 import TagBadge from "../TagBadge";
 
 interface TagBarProps {
-  tags: ProjectTag[];
+  tags: Tag[];
 }
 
 export default function TagBar({ tags }: TagBarProps) {

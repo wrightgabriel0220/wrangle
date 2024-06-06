@@ -1,9 +1,9 @@
-import { Box, Flex } from "@chakra-ui/react";
+import { Box, Flex, FormLabel } from "@chakra-ui/react";
 import {
   UseMultipleSelectionGetDropdownReturnValue,
   useCombobox,
 } from "downshift";
-import { useCallback, useRef, useState } from "react";
+import { useCallback, useState } from "react";
 import ComboboxInput from "./ComboboxInput";
 import ComboboxList from "./ComboboxList";
 
@@ -32,8 +32,6 @@ export default function Combobox({
   removeSelectedItem,
   getDropdownProps,
 }: ComboboxProps) {
-  const listRef = useRef();
-
   const [inputValue, setInputValue] = useState<string>("");
   const [visibleValues, setVisibleValues] = useState<string[]>(options);
 
@@ -76,10 +74,10 @@ export default function Combobox({
   }, [selectedItems, removeSelectedItem]);
 
   return (
-    <Flex id={id} direction="column" align="center">
-      <label {...getLabelProps()} color="white">
-        {label}
-      </label>
+    <Flex id={id} direction="row" align="center">
+      <FormLabel pr="3px" color="white" {...getLabelProps()}>
+        {label}:
+      </FormLabel>
       <Flex direction="column" flex="1 1 auto">
         <ComboboxInput
           getInputProps={getInputProps}
@@ -88,7 +86,7 @@ export default function Combobox({
           isOpen={isOpen}
           placeholder={placeholder ?? "Search..."}
         />
-        <Box position="relative" top="20%">
+        <Box position="relative" top="20%%">
           <ComboboxList
             getDropdownProps={getDropdownProps}
             getMenuProps={getMenuProps}

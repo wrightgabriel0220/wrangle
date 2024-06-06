@@ -22,6 +22,7 @@ export default function Project({ project }: ProjectProps) {
       color="white"
       fontStyle="oblique"
       className="project"
+      pl="10px"
     >
       {!project.manager_url ? (
         <Box flexGrow="1">{project.name}</Box>

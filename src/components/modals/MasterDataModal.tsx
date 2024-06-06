@@ -33,7 +33,6 @@ export default function MasterDataModal({
   data,
   deleteProject,
   deleteTag,
-  deleteView,
 }: MasterDataModalProps) {
   return (
     <Flex

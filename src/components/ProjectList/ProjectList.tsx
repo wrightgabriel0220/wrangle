@@ -1,6 +1,7 @@
 import { View } from "../../types";
 import { Project as ProjectType, Tag } from "../../../bindings";
 import Project from "./Project";
+import { Box } from "@chakra-ui/react";
 
 interface ProjectListProps {
   projects: ProjectType[];
@@ -10,16 +11,17 @@ interface ProjectListProps {
 }
 
 export default function ProjectList({
-  activeView,
   projects,
   searchQuery,
   selectedTags,
 }: ProjectListProps) {
   return (
-    <div id="project-list">
+    <Box id="project-list" py="10px">
       <div>
         {projects
-          .filter((project) => project.name?.includes(searchQuery))
+          .filter((project) =>
+            project.name?.toLowerCase().includes(searchQuery.toLowerCase())
+          )
           .filter((project) =>
             selectedTags.every((selectedTag) =>
               project.tags.includes(selectedTag)
@@ -29,6 +31,6 @@ export default function ProjectList({
             <Project key={project.id} project={project} />
           ))}
       </div>
-    </div>
+    </Box>
   );
 }

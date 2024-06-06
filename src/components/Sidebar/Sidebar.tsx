@@ -1,9 +1,8 @@
 import { Box, Button } from "@chakra-ui/react";
 import { AppData, View } from "../../types";
 import SidebarTab from "./SidebarTab";
-import { CheckCircleIcon, PlusIcon } from "@heroicons/react/20/solid";
+import { CheckCircleIcon } from "@heroicons/react/20/solid";
 import { ReactNode, useCallback } from "react";
-import CreateViewModal from "../modals/CreateViewModal";
 import MasterDataModal from "../modals/MasterDataModal";
 
 interface SidebarProps {
@@ -18,7 +17,7 @@ interface SidebarProps {
   deleteView: (id: string) => void;
 }
 
-const versionNumber = 0.31;
+const versionNumber = 0.6;
 
 export default function Sidebar({
   views,
@@ -31,10 +30,10 @@ export default function Sidebar({
   setIsModalOpen,
   setModalContent,
 }: SidebarProps) {
-  const openCreateViewModal = useCallback(() => {
-    setModalContent(<CreateViewModal />);
-    setIsModalOpen(true);
-  }, [setIsModalOpen, setModalContent]);
+  // const openCreateViewModal = useCallback(() => {
+  //   setModalContent(<CreateViewModal />);
+  //   setIsModalOpen(true);
+  // }, [setIsModalOpen, setModalContent]);
 
   const openMasterDataModal = useCallback(() => {
     setModalContent(

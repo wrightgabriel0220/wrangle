@@ -12,6 +12,7 @@ interface ToolbarProps {
   setIsModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
   setSearchQuery: React.Dispatch<React.SetStateAction<string>>;
   setSelectedTags: React.Dispatch<React.SetStateAction<Tag[]>>;
+  searchQuery: string;
   fetchAppData: () => void;
   tags: Tag[];
 }
@@ -20,6 +21,8 @@ export default function Toolbar({
   setIsModalOpen,
   setModalContent,
   fetchAppData,
+  setSearchQuery,
+  searchQuery,
   tags,
 }: ToolbarProps) {
   const { selectedItems, addSelectedItem, removeSelectedItem } =
@@ -27,17 +30,19 @@ export default function Toolbar({
 
   return (
     <Flex id="toolbar">
-      <Flex zIndex="2">
-        <SearchBar />
-        <TagSelector
-          id="toolbar-tag-selector"
-          name="toolbarTagSelector"
-          tags={tags}
-          fetchAppData={fetchAppData}
-          selectedItems={selectedItems}
-          addSelectedItem={addSelectedItem}
-          removeSelectedItem={removeSelectedItem}
-        />
+      <Flex width="100%" justifyContent="end" alignItems="center">
+        <SearchBar searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
+        <Box mx="5px">
+          <TagSelector
+            id="toolbar-tag-selector"
+            name="toolbarTagSelector"
+            tags={tags}
+            fetchAppData={fetchAppData}
+            selectedItems={selectedItems}
+            addSelectedItem={addSelectedItem}
+            removeSelectedItem={removeSelectedItem}
+          />
+        </Box>
         <Button
           onClick={() => {
             setIsModalOpen(true);

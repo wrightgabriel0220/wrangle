@@ -1,15 +1,14 @@
 import { Box, Link } from "@chakra-ui/react";
 import { BookOpenIcon } from "@heroicons/react/20/solid";
-import { Project } from "../../types";
+import { Project } from "../../../bindings";
 
 interface ProjectWikiLinkButton {
   project: Project;
 }
 
-export default function ProjectWikiLinkButton({
-  project,
-}: ProjectWikiLinkButton) {
-  const isWikiDisabled = !project.wikiType;
+export default function ProjectWikiLinkButton({}: ProjectWikiLinkButton) {
+  // const isWikiDisabled = !project.wikiType;
+  const isWikiDisabled = true;
 
   if (isWikiDisabled) {
     return (
@@ -26,7 +25,7 @@ export default function ProjectWikiLinkButton({
 
   return (
     <Link
-      href={project.wikiURL}
+      // href={project.wikiURL}
       className="project-wiki-link"
       fontWeight="bolder"
       fontSize="large"

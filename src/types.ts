@@ -8,23 +8,6 @@ export type View = {
   color: string;
 };
 
-// export type Project = {
-//   id: string;
-//   name: string;
-//   wikiFilepath?: string;
-//   wikiURL?: string;
-//   wikiType?: "MARKDOWN" | "WEB" | "";
-//   dashboard?: Dashboard;
-//   tags: ProjectTag[];
-// };
-
-// export type ProjectTag = {
-//   id: string;
-//   name: string;
-//   description?: string;
-//   color: string;
-// };
-
 export type Dashboard = {
   id: string;
   projectID: string;
