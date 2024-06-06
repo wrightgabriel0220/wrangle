@@ -72,17 +72,18 @@ export default function Sidebar({
             width="100%"
             height="10"
             backgroundColor="#828282"
+            marginBottom="3px"
           >
             Master Data
           </Button>
-          <Button
+          {/* <Button
             onClick={openCreateViewModal}
             width="100%"
             height="10"
             backgroundColor="#828282"
           >
             <PlusIcon height="100%" />
-          </Button>
+          </Button> */}
         </Box>
       </div>
     </div>

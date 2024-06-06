@@ -1,7 +1,7 @@
 import { Flex } from "@chakra-ui/react";
 import { FieldArray, FieldArrayRenderProps } from "formik";
 import TagSelector from "../TagSelector";
-import { ProjectTag } from "../../types";
+import { Tag } from "../../../bindings";
 import TagBar from "../Toolbar/TagBar";
 
 interface TagSelectorFieldProps {
@@ -9,7 +9,7 @@ interface TagSelectorFieldProps {
   fetchAppData: () => void;
   removeSelectedItem: (id: string) => void;
   selectedItems: string[];
-  tags: ProjectTag[];
+  tags: Tag[];
   name: string;
 }
 
@@ -35,7 +35,7 @@ export default function TagSelectorField({
             fetchAppData={fetchAppData}
             removeSelectedItem={(item: string) => {
               const targetID = fieldArrayHelpers.form.values.tags.find(
-                (tag: ProjectTag) => tag.name === item
+                (tag: Tag) => tag.name === item
               );
               fieldArrayHelpers.remove(targetID);
               removeSelectedItem(item);

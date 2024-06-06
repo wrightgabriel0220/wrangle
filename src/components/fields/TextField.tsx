@@ -25,7 +25,9 @@ export default function TextField({
       <FormLabel htmlFor={name} color={labelColor}>
         {label ?? name}
       </FormLabel>
-      <Field type="text" name={name} />
+      <Box px="10px" backgroundColor="white">
+        <Field type="text" name={name} />
+      </Box>
     </Box>
   );
 }

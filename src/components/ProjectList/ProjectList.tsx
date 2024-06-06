@@ -17,7 +17,6 @@ export default function ProjectList({
 }: ProjectListProps) {
   return (
     <div id="project-list">
-      {activeView.name} View
       <div>
         {projects
           .filter((project) => project.name?.includes(searchQuery))

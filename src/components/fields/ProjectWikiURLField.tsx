@@ -1,6 +1,6 @@
 import { useFormikContext } from "formik";
 import TextField from "./TextField";
-import { Project } from "../../types";
+import { Project } from "../../../bindings";
 
 export default function ProjectWikiURLField() {
   const { values } = useFormikContext<Project>();
@@ -9,7 +9,8 @@ export default function ProjectWikiURLField() {
     <TextField
       name="wikiURL"
       label="Wiki URL"
-      isHidden={values.wikiType !== "WEB"}
+      // isHidden={values.wikiType !== "WEB"}
+      isHidden={true}
     />
   );
 }

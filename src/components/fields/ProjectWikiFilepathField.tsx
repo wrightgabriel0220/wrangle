@@ -1,6 +1,6 @@
 import { useFormikContext } from "formik";
 import TextField from "./TextField";
-import { Project } from "../../types";
+import { Project } from "../../../bindings";
 
 export default function ProjectWikiFilepathField() {
   const { values } = useFormikContext<Project>();
@@ -9,7 +9,8 @@ export default function ProjectWikiFilepathField() {
     <TextField
       name="wikiFilepath"
       label="Wiki Root Folder Filepath"
-      isHidden={values.wikiType !== "MARKDOWN"}
+      // isHidden={values.wikiFilepath !== "MARKDOWN"}
+      isHidden={true}
     />
   );
 }

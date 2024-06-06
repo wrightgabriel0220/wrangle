@@ -65,9 +65,6 @@ export default function BaseModal({
           >
             Close
           </Button>
-          <Button backgroundColor="green" p="3px">
-            Submit
-          </Button>
         </ModalFooter>
       </ModalContent>
     </Modal>

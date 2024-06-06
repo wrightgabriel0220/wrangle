@@ -5,6 +5,7 @@ import { useMultipleSelection } from "downshift";
 const taurpc = await createTauRPCProxy();
 
 interface TagSelectorProps {
+  id?: string;
   name: string;
   tags: Tag[];
   fetchAppData: () => void;
@@ -14,6 +15,7 @@ interface TagSelectorProps {
 }
 
 export default function TagSelector({
+  id,
   tags,
   fetchAppData,
   selectedItems,
@@ -23,10 +25,12 @@ export default function TagSelector({
   const {
     selectedItems: internalSelectedItems,
     addSelectedItem: internalAddSelectedItem,
+    getDropdownProps,
   } = useMultipleSelection<string>();
 
   return (
     <Combobox
+      id={id}
       label="Tags"
       addItemButtonText="Add new tag "
       placeholder="Search tags..."
@@ -36,6 +40,7 @@ export default function TagSelector({
           fetchAppData();
         });
       }}
+      getDropdownProps={getDropdownProps}
       selectedItems={selectedItems ?? internalSelectedItems}
       addSelectedItem={addSelectedItem ?? internalAddSelectedItem}
       removeSelectedItem={removeSelectedItem}

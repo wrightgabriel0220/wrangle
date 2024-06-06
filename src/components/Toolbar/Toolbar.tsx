@@ -26,10 +26,11 @@ export default function Toolbar({
     useMultipleSelection<string>();
 
   return (
-    <Box>
+    <Flex id="toolbar">
       <Flex zIndex="2">
         <SearchBar />
         <TagSelector
+          id="toolbar-tag-selector"
           name="toolbarTagSelector"
           tags={tags}
           fetchAppData={fetchAppData}
@@ -56,6 +57,6 @@ export default function Toolbar({
           (tagName) => tags.find((tag) => tag.name === tagName)!
         )}
       />
-    </Box>
+    </Flex>
   );
 }

@@ -27,6 +27,8 @@ export default function ComboboxInput({
       alignItems="center"
       backgroundColor="white"
       borderRadius="10px"
+      width="100%"
+      overflowX="hidden"
     >
       <ComboboxClearButton clearSelectedItems={clearSelectedItems} />
       <Input
@@ -35,6 +37,7 @@ export default function ComboboxInput({
         flex="0 0 auto"
         width="500px"
         mt="3px"
+        p="5px 10px"
       />
       <IconButton
         {...getToggleButtonProps()}

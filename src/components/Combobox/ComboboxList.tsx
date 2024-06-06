@@ -2,6 +2,7 @@ import { Button, List, ListItem, forwardRef } from "@chakra-ui/react";
 import {
   UseComboboxGetItemPropsReturnValue,
   UseComboboxGetMenuPropsReturnValue,
+  UseMultipleSelectionGetDropdownReturnValue,
 } from "downshift";
 
 interface ComboboxListProps {
@@ -10,6 +11,7 @@ interface ComboboxListProps {
     item: string;
     index: number;
   }) => UseComboboxGetItemPropsReturnValue;
+  getDropdownProps: () => UseMultipleSelectionGetDropdownReturnValue;
   createItem: (itemName: string) => void;
   setInputValue: (input: string) => void;
   isOpen: boolean;
@@ -57,6 +59,7 @@ const ComboboxItem = forwardRef(
 export default function ComboboxList({
   getMenuProps,
   getItemProps,
+  getDropdownProps,
   setInputValue,
   isOpen,
   inputValue,
@@ -71,6 +74,7 @@ export default function ComboboxList({
   return (
     <List
       {...getMenuProps()}
+      {...getDropdownProps()}
       flex="1"
       overflowY="auto"
       py="2px"

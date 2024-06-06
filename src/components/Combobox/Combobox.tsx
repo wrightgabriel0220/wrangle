@@ -1,10 +1,14 @@
 import { Box, Flex } from "@chakra-ui/react";
-import { useCombobox } from "downshift";
-import { useCallback, useState } from "react";
+import {
+  UseMultipleSelectionGetDropdownReturnValue,
+  useCombobox,
+} from "downshift";
+import { useCallback, useRef, useState } from "react";
 import ComboboxInput from "./ComboboxInput";
 import ComboboxList from "./ComboboxList";
 
 interface ComboboxProps {
+  id?: string;
   label?: string;
   options: string[];
   createItem: (itemName: string) => void;
@@ -13,9 +17,11 @@ interface ComboboxProps {
   selectedItems: string[];
   addSelectedItem: (item: string) => void;
   removeSelectedItem: (item: string) => void;
+  getDropdownProps: () => UseMultipleSelectionGetDropdownReturnValue;
 }
 
 export default function Combobox({
+  id,
   label,
   options,
   createItem,
@@ -24,7 +30,10 @@ export default function Combobox({
   selectedItems,
   addSelectedItem,
   removeSelectedItem,
+  getDropdownProps,
 }: ComboboxProps) {
+  const listRef = useRef();
+
   const [inputValue, setInputValue] = useState<string>("");
   const [visibleValues, setVisibleValues] = useState<string[]>(options);
 
@@ -67,7 +76,7 @@ export default function Combobox({
   }, [selectedItems, removeSelectedItem]);
 
   return (
-    <Flex direction="column" align="center">
+    <Flex id={id} direction="column" align="center">
       <label {...getLabelProps()} color="white">
         {label}
       </label>
@@ -81,6 +90,7 @@ export default function Combobox({
         />
         <Box position="relative" top="20%">
           <ComboboxList
+            getDropdownProps={getDropdownProps}
             getMenuProps={getMenuProps}
             getItemProps={getItemProps}
             createItem={createItem}

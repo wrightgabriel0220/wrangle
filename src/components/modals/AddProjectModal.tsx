@@ -66,7 +66,14 @@ export default function AddProjectModal({
             selectedItems={selectedItems}
             removeSelectedItem={removeSelectedItem}
           />
-          <Button backgroundColor="green" type="submit">
+          <Button
+            backgroundColor="green"
+            type="submit"
+            mt="30px"
+            p="3px"
+            px="20px"
+            borderRadius="5px"
+          >
             Submit
           </Button>
         </Form>
