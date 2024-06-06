@@ -1,8 +1,8 @@
 import { Badge } from "@chakra-ui/react";
-import { ProjectTag } from "../types";
+import { Tag } from "../../bindings";
 
 interface TagBadgeProps {
-  tag: ProjectTag;
+  tag: Tag;
 }
 
 export default function TagBadge({ tag }: TagBadgeProps) {
