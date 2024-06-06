@@ -33,6 +33,7 @@ export default function AddProjectModal({
       <Formik<Project>
         initialValues={{
           id: "",
+          manager_url: "",
           name: "",
           tags: [],
         }}
@@ -45,6 +46,11 @@ export default function AddProjectModal({
       >
         <Form id="add-project-modal-form">
           <TextField name="name" label="Name" labelColor="#FFFFFF" />
+          <TextField
+            name="manager_url"
+            label="Project Manager URL"
+            labelColor="#FFFFFF"
+          />
           <SelectField name="wikiType" label="Wiki Type" labelColor="#FFFFFF">
             <option value="">N/A</option>
             <option value="MARKDOWN">Markdown</option>

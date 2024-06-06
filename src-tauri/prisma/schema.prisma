@@ -11,6 +11,7 @@ generator client {
 model Project {
   id           String               @id @default(cuid())
   name         String
+  managerURL   String
   wikiType     String?
   wikiURL      String?
   wikiFilepath String?

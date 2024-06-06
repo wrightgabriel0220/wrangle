@@ -3,7 +3,7 @@ import { PlusIcon } from "@heroicons/react/20/solid";
 import SearchBar from "./SearchBar";
 import TagSelector from "../TagSelector";
 import AddProjectModal from "../modals/AddProjectModal";
-import { ProjectTag } from "../../types";
+import { Tag } from "../../../bindings";
 import { useMultipleSelection } from "downshift";
 import TagBar from "./TagBar";
 
@@ -11,9 +11,9 @@ interface ToolbarProps {
   setModalContent: React.Dispatch<React.SetStateAction<React.ReactNode>>;
   setIsModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
   setSearchQuery: React.Dispatch<React.SetStateAction<string>>;
-  setSelectedTags: React.Dispatch<React.SetStateAction<ProjectTag[]>>;
+  setSelectedTags: React.Dispatch<React.SetStateAction<Tag[]>>;
   fetchAppData: () => void;
-  tags: ProjectTag[];
+  tags: Tag[];
 }
 
 export default function Toolbar({

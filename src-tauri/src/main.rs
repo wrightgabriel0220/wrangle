@@ -45,6 +45,7 @@ impl fmt::Debug for Tag {
 struct Project {
     id: String,
     name: String,
+    manager_url: String,
     tags: Vec<Tag>,
 }
 
@@ -59,6 +60,7 @@ impl From<DBProject> for Project {
         Project {
             id: db_project.id,
             name: db_project.name,
+            manager_url: db_project.manager_url,
             tags: vec![]
             // tags: db_project.tags.unwrap_or(vec![]).iter().map(|db_project_tag| Tag::from(db_project_tag.to_owned())).collect(),
         }
@@ -96,9 +98,9 @@ impl API for APIImplementation {
         let client = PrismaClient::_builder().build().await;
         println!("CREATING PROJECT: {:?}", new_project_input);
 
-        async fn add_project_with_client(client: PrismaClient, new_project_input: &Project) -> Result<Project, QueryError> {
-            println!("new_project_input.tags: {:?}", new_project_input.tags);
-            let new_db_project = client.project().create(new_project_input.clone().name, vec![]).exec().await;
+        async fn add_project_with_client(client: PrismaClient, _new_project_input: &Project) -> Result<Project, QueryError> {
+            let new_project_input: Project = _new_project_input.clone();
+            let new_db_project = client.project().create(new_project_input.name, new_project_input.manager_url, vec![]).exec().await;
 
             // TODO: Get this working. Currently commenting out as, to my understanding, PCR is not yet capable of handling this kind of many-to-many? at least not directly? idk. i couldn't figure this out myself.
             // async fn add_project_tag_relation(client: &PrismaClient, project: &Project, tag: &Tag) -> Option<project_tag_relation::Data> {
