@@ -11,24 +11,20 @@ import {
 
 interface BaseModalProps {
   isModalOpen: boolean;
-  setIsModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  onClose: () => void;
   modalContent: React.ReactNode;
-  setModalContent: React.Dispatch<React.SetStateAction<React.ReactNode>>;
 }
 
 export default function BaseModal({
   isModalOpen,
-  setIsModalOpen,
+  onClose,
   modalContent,
-  setModalContent,
+  ...props
 }: BaseModalProps) {
   return (
     <Modal
       isOpen={isModalOpen}
-      onClose={() => {
-        setIsModalOpen(false);
-        setModalContent(null);
-      }}
+      onClose={onClose}
       size="30px"
       orientation="vertical"
     >
@@ -37,6 +33,7 @@ export default function BaseModal({
         backdropFilter="auto"
         backdropBlur="5px"
         backdropBrightness="80%"
+        {...props}
       />
       <ModalContent margin="auto" height="95%" width="50%">
         <ModalHeader
@@ -49,23 +46,9 @@ export default function BaseModal({
             p="5px"
             backgroundColor="#A8A8A8"
             borderRadius="full"
-          />
+          >X</ModalCloseButton>
         </ModalHeader>
         <ModalBody height="100%">{modalContent}</ModalBody>
-
-        <ModalFooter backgroundColor="#2F2F2F" py="5px" pr="50px">
-          <Button
-            backgroundColor="red"
-            mr={3}
-            p="3px"
-            onClick={() => {
-              setIsModalOpen(false);
-              setModalContent(null);
-            }}
-          >
-            Close
-          </Button>
-        </ModalFooter>
       </ModalContent>
     </Modal>
   );

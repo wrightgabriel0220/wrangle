@@ -20,7 +20,7 @@ export default function SidebarTab({
   return (
     <Button
       onClick={() => {
-        setSelectedViewId(view.id);
+        setSelectedViewId(view.id); 
       }}
       borderRadius={0}
       className={isActive ? "sidebar-tab active" : "sidebar-tab"}

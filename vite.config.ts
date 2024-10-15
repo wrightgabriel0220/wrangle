@@ -1,3 +1,6 @@
+/// <reference types="vitest" />
+/// <reference types="vite/client" />
+
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
 import topLevelAwait from "vite-plugin-top-level-await";
@@ -13,7 +16,12 @@ export default defineConfig(async () => ({
       promiseImportName: (i) => `__tla_${i}`,
     }),
   ],
-
+  test: {
+    globals: true,
+    environment: "jsdom",
+    css: true,
+    setupFiles: "./src/test/setup.ts"
+  },
   // Vite options tailored for Tauri development and only applied in `tauri dev` or `tauri build`
   //
   // 1. prevent vite from obscuring rust errors
