@@ -114,9 +114,6 @@ describe("Sidebar", () => {
         expect(mockSetIsModalOpen.mock.calls.length).toBeGreaterThanOrEqual(1);
         expect(mockSetIsModalOpen.mock.lastCall?.[0]).toBe(true);
 
-        console.log("typeof mockSetModalContent...lastCall?.[0]: ", mockSetModalContent.mock.lastCall?.[0].type);
-        console.log("typeof MasterDataModal: ", MasterDataModal);
-
         expect(mockSetModalContent.mock.calls.length).toBeGreaterThanOrEqual(1);
         expect(mockSetModalContent.mock.lastCall?.[0].type).toBe(MasterDataModal);
     });

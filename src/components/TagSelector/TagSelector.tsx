@@ -1,8 +1,6 @@
-import { Tag, createTauRPCProxy } from "../../bindings";
-import Combobox from "./Combobox/Combobox";
+import { Tag } from "../../../bindings";
+import Combobox from "../Combobox/Combobox";
 import { useMultipleSelection } from "downshift";
-
-const taurpc = await createTauRPCProxy();
 
 interface TagSelectorProps {
   id?: string;
@@ -12,6 +10,7 @@ interface TagSelectorProps {
   selectedItems: string[];
   addSelectedItem: (item: string) => void;
   removeSelectedItem: (item: string) => void;
+  createTag: (tagName: string) => Promise<boolean>;
 }
 
 export default function TagSelector({
@@ -21,6 +20,7 @@ export default function TagSelector({
   selectedItems,
   addSelectedItem,
   removeSelectedItem,
+  createTag
 }: TagSelectorProps) {
   const {
     selectedItems: internalSelectedItems,
@@ -36,7 +36,7 @@ export default function TagSelector({
       placeholder="Search tags..."
       options={tags.map((tag) => tag.name)}
       createItem={(itemName) => {
-        taurpc.create_tag(itemName).then(() => {
+        createTag(itemName).then(() => {
           fetchAppData();
         });
       }}

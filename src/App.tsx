@@ -77,6 +77,8 @@ function App() {
             searchQuery={searchQuery}
             tags={tags}
             fetchAppData={fetchAppData}
+            createProject={taurpc.create_project}
+            createTag={taurpc.create_tag}
           />
           {errors.map((error, iter) => (
             <Alert

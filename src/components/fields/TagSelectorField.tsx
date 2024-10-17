@@ -1,6 +1,6 @@
 import { Flex } from "@chakra-ui/react";
 import { FieldArray, FieldArrayRenderProps } from "formik";
-import TagSelector from "../TagSelector";
+import TagSelector from "../TagSelector/TagSelector";
 import { Tag } from "../../../bindings";
 import TagBar from "../Toolbar/TagBar";
 

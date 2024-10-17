@@ -1,5 +1,5 @@
 import { Formik, Form } from "formik";
-import { Project, Tag, createTauRPCProxy } from "../../../bindings";
+import { Project, Tag } from "../../../bindings";
 import { Box, Button } from "@chakra-ui/react";
 import TextField from "../fields/TextField";
 import SelectField from "../fields/SelectField";
@@ -8,16 +8,16 @@ import ProjectWikiFilepathField from "../fields/ProjectWikiFilepathField";
 import { useMultipleSelection } from "downshift";
 import TagSelectorField from "../fields/TagSelectorField";
 
-const taurpc = await createTauRPCProxy();
-
 interface AddProjectModalProps {
   tags: Tag[];
   fetchAppData: () => void;
+  createProject: (values: Project) => Promise<boolean>;
 }
 
 export default function AddProjectModal({
   tags,
   fetchAppData,
+  createProject
 }: AddProjectModalProps) {
   const { selectedItems, addSelectedItem, removeSelectedItem } =
     useMultipleSelection<string>();
@@ -38,7 +38,7 @@ export default function AddProjectModal({
           tags: [],
         }}
         onSubmit={(values) => {
-          taurpc.create_project(values).then((newProject) => {
+          createProject(values).then((newProject) => {
             console.log("NEW PROJECT: ", newProject);
             fetchAppData();
           });

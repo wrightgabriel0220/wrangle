@@ -51,7 +51,6 @@ describe("BaseModal", () => {
             fireEvent(closeModalButton, new MouseEvent('click', { bubbles: true }));
         }
     
-        console.log("setIsModalOpen.mock: ", mockSetIsModalOpen.mock.lastCall);
         expect(mockSetIsModalOpen.mock.calls.length).toBeGreaterThanOrEqual(1);
         expect(mockSetIsModalOpen.mock.lastCall?.[0]).toEqual(false);
     
