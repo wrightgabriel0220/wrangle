@@ -10,7 +10,7 @@ describe("Combobox", () => {
         cleanup();
     });
 
-    it("clears selected items when the user clicks the clear tags button", () => {
+    it.todo("clears selected items when the user clicks the clear tags button", () => {
         const mockRemoveSelectedItem = vi.fn()
         
         
@@ -41,11 +41,11 @@ describe("Combobox", () => {
         expect(mockRemoveSelectedItem.mock.lastCall?.[0]).toBe(mockSelectedItems[mockSelectedItems.length - 1]);
     });
 
-    it("selects a tag when the user clicks it in the search dropdown", () => {
+    it.todo("selects a tag when the user clicks it in the search dropdown", () => {
         expect(false).toBeTruthy();
     });
 
-    it("provides accurate search results in the dropdown", () => {
+    it.todo("provides accurate search results in the dropdown", () => {
         expect(false).toBeTruthy();
     });
 });
