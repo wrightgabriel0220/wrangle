@@ -50,7 +50,9 @@ const ComboboxItem = forwardRef(
         color="#000000"
         {...props}
       >
-        {children}
+        <Button value={value}>
+          {children}
+        </Button>
       </ListItem>
     );
   }

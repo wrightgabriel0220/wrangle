@@ -1,7 +1,7 @@
 import * as matchers from "@testing-library/jest-dom/matchers";
 import { cleanup, fireEvent, render, screen } from "@testing-library/react";
 import Toolbar from "./Toolbar";
-import { Project, Tag } from "../../../bindings";
+import { Tag } from "../../../bindings";
 import AddProjectModal from "../modals/AddProjectModal";
 
 expect.extend(matchers);
@@ -45,7 +45,7 @@ describe("Toolbar", () => {
                 setSelectedTags={() => {}}
                 tags={[]}
                 createTag={async (_tagName) => { return true; }}
-                createProject={async (_values) => { return {} as Project }}
+                createProject={async (_values) => { return true; }}
             />
         )
 
@@ -75,7 +75,7 @@ describe("Toolbar", () => {
                 setSelectedTags={() => {}}
                 tags={[]}
                 createTag={async (_tagName) => { return true; }}
-                createProject={async (_values) => { return {} as Project }}
+                createProject={async (_values) => { return {} as true }}
             />
         );
 
@@ -100,7 +100,7 @@ describe("Toolbar", () => {
                 setSelectedTags={() => {}}
                 tags={mockTags}
                 createTag={async (_tagName) => { return true; }}
-                createProject={async (_values) => { return {} as Project }}
+                createProject={async (_values) => { return {} as true }}
             />
         );
 
