@@ -1,14 +1,15 @@
 import * as matchers from "@testing-library/jest-dom/matchers";
-import { cleanup, fireEvent, render, screen } from "@testing-library/react";
+import { cleanup, render, screen } from "@testing-library/react";
 import AddProjectModal from "./AddProjectModal";
 import { Project } from "../../../../bindings";
+import { userEvent } from "@testing-library/user-event"
 
 expect.extend(matchers);
 
 const mockProject: Project = {
     id: "0",
-    manager_url: "",
-    name: "",
+    manager_url: "https://www.google.com/",
+    name: "test",
     tags: [],
 };
 
@@ -17,8 +18,10 @@ describe("Add Project Modal", () => {
         cleanup();
     });
 
-    it("returns a populated Project item on successful submit", () => {
-        const mockOnSubmit = vi.fn((values) => values);
+    it("returns a populated Project item on successful submit", async () => {
+        const user = userEvent.setup();
+
+        const mockOnSubmit = vi.fn((values, _actions) => values);
         
         render(
             <AddProjectModal
@@ -28,16 +31,18 @@ describe("Add Project Modal", () => {
             />
         );
 
-        const nameInput = screen.getByRole("textbox", { name: "name" });
-        const managerURLInput = screen.getByRole("textbox", { name: "manager_url" });
+        const nameInput: HTMLInputElement = screen.getByLabelText("Name");
+        const managerURLInput: HTMLInputElement = screen.getByRole("textbox", { name: "manager_url" });
 
-        fireEvent.change(nameInput, { target: { value: mockProject.name }});
-        console.log("nameInput: ", nameInput);
-        fireEvent.change(managerURLInput, { target: { value: mockProject.manager_url } });
+        await user.type(nameInput, mockProject.name);
+        await user.type(managerURLInput, mockProject.manager_url)
 
         const submitButton = screen.getByRole("button", { name: "Submit" });
-        fireEvent(submitButton, new MouseEvent("click"));
+        await user.click(submitButton);
 
-        expect(mockOnSubmit).toHaveBeenLastCalledWith(mockProject);
+        expect(mockOnSubmit.mock.lastCall?.[0]).toEqual({
+            ...mockProject,
+            id: "",
+        });
     });
 });

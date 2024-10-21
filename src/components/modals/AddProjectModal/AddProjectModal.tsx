@@ -1,4 +1,4 @@
-import { Formik, Form } from "formik";
+import { Formik, Form, FormikHelpers } from "formik";
 import { Project, Tag } from "../../../../bindings";
 import { Box, Button } from "@chakra-ui/react";
 import TextField from "../../fields/TextField";
@@ -11,7 +11,7 @@ import TagSelectorField from "../../fields/TagSelectorField";
 interface AddProjectModalProps {
   tags: Tag[];
   fetchAppData: () => void;
-  onSubmit: (value: Project) => void;
+  onSubmit: (value: Project, actions: FormikHelpers<Project>) => void;
 }
 
 export default function AddProjectModal({
