@@ -2,7 +2,7 @@ import { Box, Button, Flex } from "@chakra-ui/react";
 import { PlusIcon } from "@heroicons/react/20/solid";
 import SearchBar from "./SearchBar";
 import TagSelector from "../TagSelector/TagSelector";
-import AddProjectModal from "../modals/AddProjectModal";
+import AddProjectModal from "../modals/AddProjectModal/AddProjectModal";
 import { Project, Tag } from "../../../bindings";
 import { useMultipleSelection } from "downshift";
 import TagBar from "./TagBar";
@@ -53,7 +53,12 @@ export default function Toolbar({
           onClick={() => {
             setIsModalOpen(true);
             setModalContent(
-              <AddProjectModal tags={tags} fetchAppData={fetchAppData} createProject={createProject} />
+              <AddProjectModal tags={tags} fetchAppData={fetchAppData} onSubmit={(values) => {
+                createProject(values).then(newProject => {
+                  console.log("newProject: ", newProject);
+                  fetchAppData();
+                });
+              }} />
             );
           }}
           height="30px"

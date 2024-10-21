@@ -26,7 +26,7 @@ export default function TextField({
         {label ?? name}
       </FormLabel>
       <Box px="10px" backgroundColor="white">
-        <Field type="text" name={name} />
+        <Field aria-label={name} type="text" name={name} />
       </Box>
     </Box>
   );

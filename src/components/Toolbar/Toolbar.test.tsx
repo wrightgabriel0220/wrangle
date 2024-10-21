@@ -2,7 +2,7 @@ import * as matchers from "@testing-library/jest-dom/matchers";
 import { cleanup, fireEvent, render, screen } from "@testing-library/react";
 import Toolbar from "./Toolbar";
 import { Tag } from "../../../bindings";
-import AddProjectModal from "../modals/AddProjectModal";
+import AddProjectModal from "../modals/AddProjectModal/AddProjectModal";
 
 expect.extend(matchers);
 
