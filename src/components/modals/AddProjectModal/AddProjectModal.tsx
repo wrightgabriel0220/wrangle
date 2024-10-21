@@ -1,23 +1,23 @@
-import { Formik, Form } from "formik";
-import { Project, Tag, createTauRPCProxy } from "../../../bindings";
+import { Formik, Form, FormikHelpers } from "formik";
+import { Project, Tag } from "../../../../bindings";
 import { Box, Button } from "@chakra-ui/react";
-import TextField from "../fields/TextField";
-import SelectField from "../fields/SelectField";
-import ProjectWikiURLField from "../fields/ProjectWikiURLField";
-import ProjectWikiFilepathField from "../fields/ProjectWikiFilepathField";
+import TextField from "../../fields/TextField";
+import SelectField from "../../fields/SelectField";
+import ProjectWikiURLField from "../../fields/ProjectWikiURLField";
+import ProjectWikiFilepathField from "../../fields/ProjectWikiFilepathField";
 import { useMultipleSelection } from "downshift";
-import TagSelectorField from "../fields/TagSelectorField";
-
-const taurpc = await createTauRPCProxy();
+import TagSelectorField from "../../fields/TagSelectorField";
 
 interface AddProjectModalProps {
   tags: Tag[];
   fetchAppData: () => void;
+  onSubmit: (value: Project, actions: FormikHelpers<Project>) => void;
 }
 
 export default function AddProjectModal({
   tags,
   fetchAppData,
+  onSubmit
 }: AddProjectModalProps) {
   const { selectedItems, addSelectedItem, removeSelectedItem } =
     useMultipleSelection<string>();
@@ -37,12 +37,7 @@ export default function AddProjectModal({
           name: "",
           tags: [],
         }}
-        onSubmit={(values) => {
-          taurpc.create_project(values).then((newProject) => {
-            console.log("NEW PROJECT: ", newProject);
-            fetchAppData();
-          });
-        }}
+        onSubmit={onSubmit}
       >
         <Form id="add-project-modal-form">
           <TextField name="name" label="Name" labelColor="#FFFFFF" />
@@ -73,6 +68,7 @@ export default function AddProjectModal({
             p="3px"
             px="20px"
             borderRadius="5px"
+            name="submit"
           >
             Submit
           </Button>

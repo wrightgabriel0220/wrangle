@@ -6,7 +6,7 @@ import { Alert, ChakraBaseProvider } from "@chakra-ui/react";
 import { View } from "./types";
 import { Project, Tag } from "../bindings.ts";
 import ProjectList from "./components/ProjectList/ProjectList";
-import BaseModal from "./components/BaseModal";
+import BaseModal from "./components/BaseModal/BaseModal.tsx";
 import { createTauRPCProxy } from "../bindings.ts";
 
 const allProjectsView: View = {
@@ -50,8 +50,10 @@ function App() {
         <BaseModal
           isModalOpen={isModalOpen}
           modalContent={modalContent}
-          setIsModalOpen={setIsModalOpen}
-          setModalContent={setModalContent}
+          onClose={() => {
+            setIsModalOpen(false);
+            setModalContent(null);
+          }}
         />
         <Sidebar
           appData={{ projects, tags, views }}
@@ -75,6 +77,8 @@ function App() {
             searchQuery={searchQuery}
             tags={tags}
             fetchAppData={fetchAppData}
+            createProject={taurpc.create_project}
+            createTag={taurpc.create_tag}
           />
           {errors.map((error, iter) => (
             <Alert

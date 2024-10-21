@@ -22,12 +22,10 @@ export default function TextField({
       my="10px"
       hidden={isHidden}
     >
-      <FormLabel htmlFor={name} color={labelColor}>
-        {label ?? name}
-      </FormLabel>
-      <Box px="10px" backgroundColor="white">
-        <Field type="text" name={name} />
-      </Box>
+        <FormLabel htmlFor={name} color={labelColor}>
+          {label ?? name}
+        </FormLabel>
+        <Field type="text" name={name} aria-label={name} id={name} />
     </Box>
   );
 }

@@ -3,7 +3,7 @@ import { AppData, View } from "../../types";
 import SidebarTab from "./SidebarTab";
 import { CheckCircleIcon } from "@heroicons/react/20/solid";
 import { ReactNode, useCallback } from "react";
-import MasterDataModal from "../modals/MasterDataModal";
+import MasterDataModal from "../modals/MasterDataModal/MasterDataModal";
 
 interface SidebarProps {
   appData: AppData;

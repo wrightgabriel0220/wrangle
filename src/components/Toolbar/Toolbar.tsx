@@ -1,9 +1,9 @@
 import { Box, Button, Flex } from "@chakra-ui/react";
 import { PlusIcon } from "@heroicons/react/20/solid";
 import SearchBar from "./SearchBar";
-import TagSelector from "../TagSelector";
-import AddProjectModal from "../modals/AddProjectModal";
-import { Tag } from "../../../bindings";
+import TagSelector from "../TagSelector/TagSelector";
+import AddProjectModal from "../modals/AddProjectModal/AddProjectModal";
+import { Project, Tag } from "../../../bindings";
 import { useMultipleSelection } from "downshift";
 import TagBar from "./TagBar";
 
@@ -14,6 +14,8 @@ interface ToolbarProps {
   setSelectedTags: React.Dispatch<React.SetStateAction<Tag[]>>;
   searchQuery: string;
   fetchAppData: () => void;
+  createTag: (tagName: string) => Promise<boolean>;
+  createProject: (values: Project) => Promise<boolean>;
   tags: Tag[];
 }
 
@@ -24,6 +26,8 @@ export default function Toolbar({
   setSearchQuery,
   searchQuery,
   tags,
+  createTag,
+  createProject
 }: ToolbarProps) {
   const { selectedItems, addSelectedItem, removeSelectedItem } =
     useMultipleSelection<string>();
@@ -41,13 +45,20 @@ export default function Toolbar({
             selectedItems={selectedItems}
             addSelectedItem={addSelectedItem}
             removeSelectedItem={removeSelectedItem}
+            createTag={createTag}
           />
         </Box>
         <Button
+          aria-label="add project"
           onClick={() => {
             setIsModalOpen(true);
             setModalContent(
-              <AddProjectModal tags={tags} fetchAppData={fetchAppData} />
+              <AddProjectModal tags={tags} fetchAppData={fetchAppData} onSubmit={(values) => {
+                createProject(values).then(newProject => {
+                  console.log("newProject: ", newProject);
+                  fetchAppData();
+                });
+              }} />
             );
           }}
           height="30px"

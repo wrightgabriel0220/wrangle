@@ -1,6 +1,6 @@
 import { Flex, Heading, IconButton, List, ListItem } from "@chakra-ui/react";
-import { AppData } from "../../types";
-import { Project, Tag } from "../../../bindings";
+import { AppData } from "../../../types";
+import { Project, Tag } from "../../../../bindings";
 import { XMarkIcon } from "@heroicons/react/20/solid";
 
 interface MasterDataModalProps {
