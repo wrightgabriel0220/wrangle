@@ -12,12 +12,14 @@ interface AddProjectModalProps {
   tags: Tag[];
   fetchAppData: () => void;
   onSubmit: (value: Project, actions: FormikHelpers<Project>) => void;
+  createTag: (tagName: string) => Promise<boolean>;
 }
 
 export default function AddProjectModal({
   tags,
   fetchAppData,
-  onSubmit
+  onSubmit,
+  createTag,
 }: AddProjectModalProps) {
   const { selectedItems, addSelectedItem, removeSelectedItem } =
     useMultipleSelection<string>();
@@ -58,6 +60,7 @@ export default function AddProjectModal({
             addSelectedItem={addSelectedItem}
             tags={tags}
             fetchAppData={fetchAppData}
+            createTag={createTag}
             selectedItems={selectedItems}
             removeSelectedItem={removeSelectedItem}
           />

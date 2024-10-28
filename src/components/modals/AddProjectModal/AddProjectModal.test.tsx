@@ -26,6 +26,7 @@ describe("Add Project Modal", () => {
         render(
             <AddProjectModal
                 tags={[]}
+                createTag={vi.fn()}
                 fetchAppData={vi.fn()}
                 onSubmit={mockOnSubmit}
             />

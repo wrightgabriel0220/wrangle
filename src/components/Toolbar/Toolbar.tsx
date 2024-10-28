@@ -53,7 +53,7 @@ export default function Toolbar({
           onClick={() => {
             setIsModalOpen(true);
             setModalContent(
-              <AddProjectModal tags={tags} fetchAppData={fetchAppData} onSubmit={(values) => {
+              <AddProjectModal tags={tags} createTag={createTag} fetchAppData={fetchAppData} onSubmit={(values) => {
                 createProject(values).then(newProject => {
                   console.log("newProject: ", newProject);
                   fetchAppData();

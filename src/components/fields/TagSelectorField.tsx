@@ -8,6 +8,7 @@ interface TagSelectorFieldProps {
   addSelectedItem: (id: string) => void;
   fetchAppData: () => void;
   removeSelectedItem: (id: string) => void;
+  createTag: (tagName: string) => Promise<boolean>;
   selectedItems: string[];
   tags: Tag[];
   name: string;
@@ -18,6 +19,7 @@ export default function TagSelectorField({
   fetchAppData,
   removeSelectedItem,
   selectedItems,
+  createTag,
   tags,
   name,
 }: TagSelectorFieldProps) {
@@ -28,6 +30,7 @@ export default function TagSelectorField({
         render={(fieldArrayHelpers: FieldArrayRenderProps) => (
           <TagSelector
             name={name}
+            createTag={createTag}
             addSelectedItem={(item: string) => {
               fieldArrayHelpers.push(tags.find((tag) => tag.name === item));
               addSelectedItem(item);
